@@ -67,4 +67,28 @@ public class Worker {
 	public void removeContracts(HourContract contracts) {
 		this.contracts.remove(contracts);
 	}
+	
+	public Double income(Integer year, Integer month) {
+		double value = this.baseSalary;
+		
+		for(HourContract contract : this.contracts) {
+			if(
+					year == contract.getDate().getYear() 
+					&& month == contract.getDate().getMonthValue()
+					)
+				value += contract.totalValue(); 
+		}
+		
+		return value;
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder str = new StringBuilder();
+		
+		str.append("Name: " + getName());
+		str.append("\nDepartament: " + getDepartament());
+		
+		return str.toString();
+	}
 }
