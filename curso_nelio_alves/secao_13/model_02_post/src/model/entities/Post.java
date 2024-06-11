@@ -71,7 +71,7 @@ public class Post {
 		str.append("\nLike = " + getLike());
 		
 		for(Comment comment : comments) {
-			str.append("Text = " + comment);
+			str.append("\nText = " + comment);
 		}
 		
 		return str.toString();
