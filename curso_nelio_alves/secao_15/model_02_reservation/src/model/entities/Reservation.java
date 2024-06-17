@@ -48,7 +48,7 @@ public class Reservation {
 	}
 	
 	public long duration() {
-		return ChronoUnit.DAYS.between(checkOut, checkIn);
+		return ChronoUnit.DAYS.between(checkIn, checkOut);
 	}
 	
 	public void updateDates(LocalDate checkIn, LocalDate checkOut) {
@@ -58,7 +58,7 @@ public class Reservation {
 			throw new DomainException("Reservation dates for update must be future dates");
 		
 		if(!checkOut.isAfter(checkIn))
-			throw new DomainException("\"Check-out date must be after check-in date\"");
+			throw new DomainException("Check-out date must be after check-in date");
 		
 		this.checkIn = checkIn;
 		this.checkOut = checkOut;
