@@ -1,7 +1,10 @@
 package application;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +40,20 @@ public class Program {
 				line = br.readLine();
 			}
 			
-			for(Item item : items) {
-				System.out.println(item);
+			File newFolder = new File(path + "\\out");
+			
+			if(!newFolder.exists())
+				newFolder.mkdir();
+			
+			File newFile = new File(newFolder, "summary.csv");
+			
+			try(BufferedWriter bw = new BufferedWriter(new FileWriter(newFile))){
+				bw.write("Name,Total\n");
+				for(Item item : items) {
+					bw.write(item.toString());
+				}
+			} catch(IOException e) {
+				System.out.println(e.getMessage());
 			}
 		} catch(IOException e) {
 			System.out.println(e.getMessage());

@@ -37,9 +37,13 @@ public class Item {
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
 	}
+	
+	public Double total() {
+		return getUnitPrice() * getQuantity();
+	}
 
 	@Override
 	public String toString() {
-		return "Item [name=" + name + ", unitPrice=" + unitPrice + ", quantity=" + quantity + "]";
+		return getName() + "," + String.format("%.2f", total()) + "\n";
 	}
 }
