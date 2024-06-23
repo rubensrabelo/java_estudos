@@ -18,14 +18,17 @@ public class RentalService {
 	}
 	
 	public void processInvoice(CarRental car) {
-		Duration duration = Duration.between(car.getStart(), car.getFinish());
-		long hour = duration.getSeconds() / 3600;
+		Double minutes = Long.valueOf(
+				Duration.between(car.getStart(), car.getFinish()).toMinutes()
+				).doubleValue();
+		Double hour = minutes / 60;
+		
 		
 		Double basicPayment;
 		if(hour > 12)
-			basicPayment = pricePerhour * Math.ceil(hour/24);
+			basicPayment = pricePerDay * Math.ceil(hour/24);
 		else
-			basicPayment = pricePerDay * Math.ceil(hour);
+			basicPayment = pricePerhour * Math.ceil(hour);
 		
 		Double tax = taxService.tax(basicPayment);
 		
