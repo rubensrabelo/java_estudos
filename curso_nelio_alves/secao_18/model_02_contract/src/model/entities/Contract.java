@@ -1,8 +1,13 @@
 package model.entities;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+
+import services.ContractService;
+import services.PaypalService;
 
 public class Contract {
 	private Integer number;
@@ -48,7 +53,25 @@ public class Contract {
 		return installments;
 	}
 
-	public void setInstallments(List<Installment> installments) {
-		this.installments = installments;
+	public void addInstallments(Installment installments) {
+		this.installments.add(installments);
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder str = new StringBuilder();
+		DecimalFormat fmtString = new DecimalFormat("#.##");
+		DateTimeFormatter fmtDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		
+		int i = 1;
+		str.append("Parcelas:\n");
+		for(Installment installment : installments) {
+			str.append("Parcela #" + i + ": \n");
+			str.append(getDate().format(fmtDate) + " - ");
+			str.append(fmtString.format(installment.getAmount()) + "\n");
+			i++;
+		}
+		
+		return str.toString();
 	}
 }

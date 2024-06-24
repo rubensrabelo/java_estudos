@@ -3,6 +3,7 @@ package services;
 import java.time.LocalDate;
 
 import model.entities.Contract;
+import model.entities.Installment;
 
 public class ContractService {
 	private OnlinePaymentService paymentService;
@@ -18,6 +19,10 @@ public class ContractService {
 			LocalDate nextDate = contract.getDate().plusMonths(i);
 			
 			amount = paymentService.interest(amount, i);
+			
+			Installment installment = new Installment(nextDate, amount);
+			
+			contract.addInstallments(installment);
 		}
 	}
 }
