@@ -67,7 +67,7 @@ public class Contract {
 		str.append("Parcelas:\n");
 		for(Installment installment : installments) {
 			str.append("Parcela #" + i + ": \n");
-			str.append(getDate().format(fmtDate) + " - ");
+			str.append(installment.getDueDate().format(fmtDate) + " - ");
 			str.append(fmtString.format(installment.getAmount()) + "\n");
 			i++;
 		}

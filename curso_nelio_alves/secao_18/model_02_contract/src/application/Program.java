@@ -41,8 +41,7 @@ public class Program {
 		contractService.processContract(contract, quantity);
 		
 		System.out.println(contract);
-		
-		// Os calculos estão errados
+	
 		
 		sc.close();
 	}
