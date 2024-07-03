@@ -37,17 +37,30 @@ public class Program {
 					votesByPersonList.add(votesByPerson);
 				} else {
 					
+					boolean existValue = false;
+					
 					for(Map<String, Integer> verify : votesByPersonList) {
-						if(votesByPerson.equals(verify)) {
-							// Encontrei o valor, vou ter que somar o valor e dá um jeito de
-							// colocar valores caso seja falso
+						if(verify.containsKey(name)) {
 							Integer currentVotes = verify.get(name);
 							verify.put(name, currentVotes + votes);
+							existValue = true;
 						}
 					}
+					
+					if(!existValue)
+						votesByPersonList.add(votesByPerson);
 				}
 				
 				line = br.readLine();
+			}
+			
+			for(Map<String, Integer> data : votesByPersonList) {
+				System.out.println("------------------------------------");
+				for(String key : data.keySet()) {
+					System.out.println(key + ": " + data.get(key));
+				}
+				System.out.println("------------------------------------");
+				System.out.println();
 			}
 			
 		} catch(IOException e) {
