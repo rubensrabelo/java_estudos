@@ -21,6 +21,21 @@ public class Program {
 		list.sort(Program::compareTo);
 		
 		list.forEach(System.out::println);
+		
+		System.out.println();
+		
+		List<Product> list2 = new ArrayList<>();
+		
+		list2.add(new Product("TV 2", 900.00));
+		list2.add(new Product("Notebook 2", 1200.00));
+		list2.add(new Product("Tablet 2", 450.00));
+		
+		list2.sort(Program::compareTo);
+		
+		list2.sort((prod1, prod2) -> prod1.getPrice().compareTo(prod2.getPrice()));
+		
+		list2.forEach(System.out::println);
+		
 	}
 
 }
