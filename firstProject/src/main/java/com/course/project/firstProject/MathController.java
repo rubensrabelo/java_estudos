@@ -21,7 +21,47 @@ public class MathController {
 		}
 		
 		return convertToNumber(numberOne) + convertToNumber(numberTwo);
-	} 
+	}
+	
+	@RequestMapping(value = "/subtraction/{numberOne}/{numberTwo}", method = RequestMethod.GET)
+	public Double subtraction(
+				@PathVariable(value = "numberOne") String numberOne,
+				@PathVariable(value = "numberTwo") String numberTwo
+			) throws Exception {
+		if(!isNumeric(numberOne) || !isNumeric(numberTwo)) {
+			throw new UnsupportedMathOperationException("Please, insert a number.");
+		}
+		
+		return convertToNumber(numberTwo) - convertToNumber(numberOne);
+	}
+	
+	@RequestMapping(value = "/multiplication/{numberOne}/{numberTwo}", method = RequestMethod.GET)
+	public Double multiplication(
+				@PathVariable(value = "numberOne") String numberOne,
+				@PathVariable(value = "numberTwo") String numberTwo
+			) throws Exception {
+		if(!isNumeric(numberOne) || !isNumeric(numberTwo)) {
+			throw new UnsupportedMathOperationException("Please, insert number.");
+		}
+		
+		return convertToNumber(numberOne) * convertToNumber(numberTwo);
+	}
+	
+	@RequestMapping(value = "/division/{numerator}/{denominator}", method = RequestMethod.GET)
+	public Double division(
+				@PathVariable(value = "numerator") String numerator,
+				@PathVariable(value = "denominator") String denominator
+			) throws Exception {
+		if(!isNumeric(numerator) || !isNumeric(denominator)) {
+			throw new UnsupportedMathOperationException("Please, insert number.");
+		}
+		
+		if(convertToNumber(denominator) == 0) {
+			throw new ArithmeticException("Denominator cannot be zero.");
+		}
+		
+		return convertToNumber(numerator) / convertToNumber(denominator);
+	}
 
 	private Double convertToNumber(String strNumber) {
 		if(strNumber == null) return 0D;
