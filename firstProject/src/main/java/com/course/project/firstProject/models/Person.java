@@ -1,0 +1,85 @@
+package com.course.project.firstProject.models;
+
+import java.io.Serializable;
+import java.util.Objects;
+
+public class Person implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	
+	private Integer id;
+	private String firstname;
+	private String lastname;
+	private String adress;
+	private String gender;
+	
+	public Person() {
+	}
+	
+	public Person(Integer id, String firstname, String lastname, String adress, String gender) {
+		this.id = id;
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.adress = adress;
+		this.gender = gender;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getFirstname() {
+		return firstname;
+	}
+
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+
+	public String getLastname() {
+		return lastname;
+	}
+
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+
+	public String getAdress() {
+		return adress;
+	}
+
+	public void setAdress(String adress) {
+		this.adress = adress;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(adress, firstname, gender, id, lastname);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Person other = (Person) obj;
+		return Objects.equals(adress, other.adress) && Objects.equals(firstname, other.firstname)
+				&& Objects.equals(gender, other.gender) && Objects.equals(id, other.id)
+				&& Objects.equals(lastname, other.lastname);
+	}
+}
