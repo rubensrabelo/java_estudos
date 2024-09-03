@@ -3,32 +3,51 @@ package com.course.project.firstProject.models;
 import java.io.Serializable;
 import java.util.Objects;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "tb_person")
 public class Person implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	private Integer id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	@Column(name = "first_name", nullable = false, length = 80)
 	private String firstname;
+	
+	@Column(name = "last_name", nullable = false, length = 80)
 	private String lastname;
-	private String adress;
+	
+	@Column(nullable = false, length = 100)
+	private String address;
+	
+	@Column(nullable = false, length = 6)
 	private String gender;
 	
 	public Person() {
 	}
 	
-	public Person(Integer id, String firstname, String lastname, String adress, String gender) {
+	public Person(Long id, String firstname, String lastname, String adress, String gender) {
 		this.id = id;
 		this.firstname = firstname;
 		this.lastname = lastname;
-		this.adress = adress;
+		this.address = adress;
 		this.gender = gender;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -48,12 +67,12 @@ public class Person implements Serializable {
 		this.lastname = lastname;
 	}
 
-	public String getAdress() {
-		return adress;
+	public String getAddress() {
+		return address;
 	}
 
-	public void setAdress(String adress) {
-		this.adress = adress;
+	public void setAddress(String adress) {
+		this.address = adress;
 	}
 
 	public String getGender() {
@@ -66,7 +85,7 @@ public class Person implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(adress, firstname, gender, id, lastname);
+		return Objects.hash(address, firstname, gender, id, lastname);
 	}
 
 	@Override
@@ -78,7 +97,7 @@ public class Person implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Person other = (Person) obj;
-		return Objects.equals(adress, other.adress) && Objects.equals(firstname, other.firstname)
+		return Objects.equals(address, other.address) && Objects.equals(firstname, other.firstname)
 				&& Objects.equals(gender, other.gender) && Objects.equals(id, other.id)
 				&& Objects.equals(lastname, other.lastname);
 	}
