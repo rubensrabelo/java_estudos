@@ -1,7 +1,6 @@
 package com.course.project.firstProject.services;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +29,7 @@ public class PersonService {
 		logger.info("Finding one person!");
 				
 		return repository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));;
+				.orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!")); 
 	}
 	
 	public Person create(Person person) {
