@@ -10,6 +10,7 @@ import com.course.project.firstProject.data.vo.v1.PersonVO;
 import com.course.project.firstProject.data.vo.v2.PersonVOV2;
 import com.course.project.firstProject.exceptions.ResourceNotFoundException;
 import com.course.project.firstProject.mapper.DozerMapper;
+import com.course.project.firstProject.mapper.custom.PersonMapper;
 import com.course.project.firstProject.models.Person;
 import com.course.project.firstProject.repositories.PersonRepository;
 
@@ -20,6 +21,9 @@ public class PersonService {
 	
 	@Autowired
 	private PersonRepository repository;
+	
+	@Autowired
+	private PersonMapper mapper;
 	
 	public List<PersonVO> findAll() {
 		logger.info("Find all people!");
@@ -51,8 +55,8 @@ public class PersonService {
 		
 		logger.info("Creating a person with V2!");
 		
-		var entity = DozerMapper.parseObject(person, Person.class);
-		var vo = DozerMapper.parseObject(repository.save(entity), PersonVOV2.class);
+		var entity = mapper.convertVOToEntity(person);
+		var vo = mapper.convertEntityToVO(repository.save(entity));
 		
 		return vo;
 	}
