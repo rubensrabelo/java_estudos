@@ -30,11 +30,14 @@ public class User implements Serializable {
 	private String email;
 	
 	@Column(nullable = false)
+	private String password;
+	
+	@Column(nullable = false)
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate birthDate;
 	
-	@Column(nullable = false)
-	private String password;
+	@Column(nullable = false, length = 1)
+	private String gender;
 	
 	public User() {
 	}
@@ -86,6 +89,16 @@ public class User implements Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 
 	@Override

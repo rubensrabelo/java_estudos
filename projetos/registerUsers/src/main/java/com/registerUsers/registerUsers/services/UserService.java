@@ -13,6 +13,8 @@ import com.registerUsers.registerUsers.repositories.UserRepository;
 import com.registerUsers.registerUsers.services.exceptions.DatabaseException;
 import com.registerUsers.registerUsers.services.exceptions.ResourceNotFoundException;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public class UserService {
 	
@@ -41,5 +43,23 @@ public class UserService {
 		} catch(DataIntegrityViolationException e) {
 			throw new DatabaseException(e.getMessage());
 		}
+	}
+	
+	public User update(Long id, User user) {
+		try {
+			User entity = repository.getReferenceById(id);
+			updateData(entity, user);
+			
+			return repository.save(entity);
+		} catch(EntityNotFoundException e) {
+			throw new ResourceNotFoundException(id);
+		}
+	}
+
+	private void updateData(User entity, User user) {
+		
+		entity.setName(user.getName());
+		entity.setBirthDate(user.getBirthDate());
+		entity.setGender(user.getGender());
 	}
 }
