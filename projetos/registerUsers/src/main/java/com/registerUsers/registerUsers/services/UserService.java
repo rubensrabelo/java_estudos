@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.registerUsers.registerUsers.models.User;
@@ -22,6 +23,9 @@ public class UserService {
 	@Autowired
 	private UserRepository repository;
 	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	public List<User> findAll() {
 		return repository.findAll();
 	}
@@ -37,6 +41,8 @@ public class UserService {
 		
 		if(existingUser.isPresent())
 			throw new EmailAlreadyExistsException(user.getEmail());
+		
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		
 		return repository.save(user);
 	}
