@@ -8,6 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -22,30 +24,34 @@ public class Product {
 	
 	@Column(nullable = false, length = 100, unique = true)
 	private String name;
+
 	private String description;
 	
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false)
 	private Double unitPrice;
 	
 	private Double quantity;
-	private Long category_id;
-	
+
 	@Column(nullable = false, updatable = false)
 	private Instant createdDate;
 	
 	@Column(nullable = false)
 	private Instant updatedDate;
 	
+	@ManyToOne
+	@JoinColumn(name = "category_id", nullable = false)
+	private Category category;
+
 	public Product() {
 	}
 
-	public Product(Long id, String name, String description, Double unitPrice, Double quantity, Long category_id) {
+	public Product(Long id, String name, String description, Double unitPrice, Double quantity, Category category) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.unitPrice = unitPrice;
 		this.quantity = quantity;
-		this.category_id = category_id;
+		this.category = category;
 	}
 
 	public Long getId() {
@@ -76,8 +82,8 @@ public class Product {
 		return unitPrice;
 	}
 
-	public void setUnitPrice(Double unit_price) {
-		this.unitPrice = unit_price;
+	public void setUnitPrice(Double unitPrice) {
+		this.unitPrice = unitPrice;
 	}
 
 	public Double getQuantity() {
@@ -88,12 +94,12 @@ public class Product {
 		this.quantity = quantity;
 	}
 
-	public Long getCategory_id() {
-		return category_id;
+	public Category getCategory() {
+		return category;
 	}
 
-	public void setCategory_id(Long category_id) {
-		this.category_id = category_id;
+	public void setCategory(Category category) {
+		this.category = category;
 	}
 
 	public Instant getCreatedDate() {
@@ -119,7 +125,7 @@ public class Product {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(category_id, createdDate, description, id, name, quantity, unitPrice, updatedDate);
+		return Objects.hash(category, createdDate, description, id, name, quantity, unitPrice, updatedDate);
 	}
 
 	@Override
@@ -131,7 +137,7 @@ public class Product {
 		if (getClass() != obj.getClass())
 			return false;
 		Product other = (Product) obj;
-		return Objects.equals(category_id, other.category_id) && Objects.equals(createdDate, other.createdDate)
+		return Objects.equals(category, other.category) && Objects.equals(createdDate, other.createdDate)
 				&& Objects.equals(description, other.description) && Objects.equals(id, other.id)
 				&& Objects.equals(name, other.name) && Objects.equals(quantity, other.quantity)
 				&& Objects.equals(unitPrice, other.unitPrice) && Objects.equals(updatedDate, other.updatedDate);

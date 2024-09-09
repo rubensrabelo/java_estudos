@@ -1,12 +1,16 @@
 package com.productManagement.productManagement.models;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -20,15 +24,18 @@ public class Category {
 	@Column(nullable = false, length = 100, unique = true)
 	private String name;
 	
-	private String desciption;
+	private String description;
+	
+	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Product> products = new ArrayList<>();
 	
 	public Category() {
 	}
 
-	public Category(Long id, String name, String desciption) {
+	public Category(Long id, String name, String description ) {
 		this.id = id;
 		this.name = name;
-		this.desciption = desciption;
+		this.description  = description ;
 	}
 
 	public Long getId() {
@@ -47,17 +54,21 @@ public class Category {
 		this.name = name;
 	}
 
-	public String getDesciption() {
-		return desciption;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setDesciption(String desciption) {
-		this.desciption = desciption;
+	public void setDescription(String description ) {
+		this.description = description ;
+	}
+	
+	public List<Product> getProducts() {
+		return products;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(desciption, id, name);
+		return Objects.hash(description, id, name, products);
 	}
 
 	@Override
@@ -69,7 +80,7 @@ public class Category {
 		if (getClass() != obj.getClass())
 			return false;
 		Category other = (Category) obj;
-		return Objects.equals(desciption, other.desciption) && Objects.equals(id, other.id)
-				&& Objects.equals(name, other.name);
+		return Objects.equals(description, other.description) && Objects.equals(id, other.id)
+				&& Objects.equals(name, other.name) && Objects.equals(products, other.products);
 	}
 }
