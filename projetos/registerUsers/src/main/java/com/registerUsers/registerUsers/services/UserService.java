@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.registerUsers.registerUsers.models.User;
 import com.registerUsers.registerUsers.repositories.UserRepository;
 import com.registerUsers.registerUsers.services.exceptions.DatabaseException;
+import com.registerUsers.registerUsers.services.exceptions.EmailAlreadyExistsException;
 import com.registerUsers.registerUsers.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -32,6 +33,11 @@ public class UserService {
 	}
 	
 	public User insert(User user) {
+		Optional<User> existingUser = repository.findByEmail(user.getEmail());
+		
+		if(existingUser.isPresent())
+			throw new EmailAlreadyExistsException(user.getEmail());
+		
 		return repository.save(user);
 	}
 	
@@ -47,10 +53,10 @@ public class UserService {
 	
 	public User update(Long id, User user) {
 		try {
-			User entity = repository.getReferenceById(id);
-			updateData(entity, user);
+			Optional<User> entity = repository.findById(id);
+			updateData(entity.get(), user);
 			
-			return repository.save(entity);
+			return repository.save(entity.get());
 		} catch(EntityNotFoundException e) {
 			throw new ResourceNotFoundException(id);
 		}
