@@ -3,30 +3,49 @@ package com.productManagement.productManagement.models;
 import java.time.Instant;
 import java.util.Objects;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "tb_products")
 public class Product {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@Column(nullable = false, length = 100, unique = true)
 	private String name;
 	private String description;
-	private Double unit_price;
+	
+	@Column(nullable = false, unique = true)
+	private Double unitPrice;
+	
 	private Double quantity;
 	private Long category_id;
-	private Instant created_date;
-	private Instant uptated_date;
+	
+	@Column(nullable = false, updatable = false)
+	private Instant createdDate;
+	
+	@Column(nullable = false)
+	private Instant updatedDate;
 	
 	public Product() {
 	}
 
-	public Product(Long id, String name, String description, Double unit_price, Double quantity, Long category_id,
-			Instant created_date, Instant uptated_date) {
+	public Product(Long id, String name, String description, Double unitPrice, Double quantity, Long category_id) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
-		this.unit_price = unit_price;
+		this.unitPrice = unitPrice;
 		this.quantity = quantity;
 		this.category_id = category_id;
-		this.created_date = created_date;
-		this.uptated_date = uptated_date;
 	}
 
 	public Long getId() {
@@ -53,12 +72,12 @@ public class Product {
 		this.description = description;
 	}
 
-	public Double getUnit_price() {
-		return unit_price;
+	public Double getUnitPrice() {
+		return unitPrice;
 	}
 
-	public void setUnit_price(Double unit_price) {
-		this.unit_price = unit_price;
+	public void setUnitPrice(Double unit_price) {
+		this.unitPrice = unit_price;
 	}
 
 	public Double getQuantity() {
@@ -77,25 +96,30 @@ public class Product {
 		this.category_id = category_id;
 	}
 
-	public Instant getCreated_date() {
-		return created_date;
+	public Instant getCreatedDate() {
+		return createdDate;
 	}
 
-	public void setCreated_date(Instant created_date) {
-		this.created_date = created_date;
+	public Instant getUpdatedDate() {
+		return updatedDate;
 	}
-
-	public Instant getUptated_date() {
-		return uptated_date;
+	
+	@PrePersist
+	public void prePersist() {
+		Instant now = Instant.now();
+		
+		this.createdDate = now;
+		this.updatedDate = now;
 	}
-
-	public void setUptated_date(Instant uptated_date) {
-		this.uptated_date = uptated_date;
+	
+	@PreUpdate
+	public void preUpdate() {
+		this.updatedDate = Instant.now();
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(category_id, created_date, description, id, name, quantity, unit_price, uptated_date);
+		return Objects.hash(category_id, createdDate, description, id, name, quantity, unitPrice, updatedDate);
 	}
 
 	@Override
@@ -107,9 +131,9 @@ public class Product {
 		if (getClass() != obj.getClass())
 			return false;
 		Product other = (Product) obj;
-		return Objects.equals(category_id, other.category_id) && Objects.equals(created_date, other.created_date)
+		return Objects.equals(category_id, other.category_id) && Objects.equals(createdDate, other.createdDate)
 				&& Objects.equals(description, other.description) && Objects.equals(id, other.id)
 				&& Objects.equals(name, other.name) && Objects.equals(quantity, other.quantity)
-				&& Objects.equals(unit_price, other.unit_price) && Objects.equals(uptated_date, other.uptated_date);
+				&& Objects.equals(unitPrice, other.unitPrice) && Objects.equals(updatedDate, other.updatedDate);
 	}
 }
