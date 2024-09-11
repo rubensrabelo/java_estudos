@@ -33,7 +33,7 @@ public class ProductService {
 		return product.get();
 	}
 	
-	public Product save(Product product) {
+	public Product insert(Product product) {
 		return repository.save(product);
 	}
 	
