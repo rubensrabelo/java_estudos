@@ -5,6 +5,7 @@ import java.util.Objects;
 
 import com.userRegister.userRegister.role.Role;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
