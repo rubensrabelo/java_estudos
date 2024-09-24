@@ -70,8 +70,8 @@ public class MathController {
 		return convertToDouble(numerator) / convertToDouble(denominator);	
 	}
 	
-	@RequestMapping(value = "/average/{numberOne}/{numberTwo}")
-	public Double average(
+	@RequestMapping(value = "/mean/{numberOne}/{numberTwo}")
+	public Double mean(
 				@PathVariable(value = "numberOne") String numberOne,
 				@PathVariable(value = "numberTwo") String numberTwo
 			) throws Exception {
