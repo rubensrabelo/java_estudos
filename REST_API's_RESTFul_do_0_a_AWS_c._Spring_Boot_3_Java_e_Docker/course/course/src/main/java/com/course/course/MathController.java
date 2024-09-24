@@ -52,6 +52,52 @@ public class MathController {
 		
 		return convertToDouble(numberOne) * convertToDouble(numberTwo);
 	}
+	
+	@RequestMapping(value = "/div/{numerator}/{denominator}")
+	public Double division(
+			@PathVariable(value = "numerator") String numerator,
+			@PathVariable(value = "denominator") String denominator
+			) throws Exception {
+		
+		if(!isNumeric(numerator) || !isNumeric(denominator)) {
+			throw new UnsupportedMathOperationException("Please set a numeric value");
+		}
+		
+		if(convertToDouble(denominator) == 0) {
+			throw new UnsupportedMathOperationException("There is no division with the denominator equal to zero.");
+		}
+		
+		return convertToDouble(numerator) / convertToDouble(denominator);	
+	}
+	
+	@RequestMapping(value = "/average/{numberOne}/{numberTwo}")
+	public Double average(
+				@PathVariable(value = "numberOne") String numberOne,
+				@PathVariable(value = "numberTwo") String numberTwo
+			) throws Exception {
+		
+		if(!isNumeric(numberOne) || !isNumeric(numberTwo)) {
+			throw new UnsupportedMathOperationException("Please set a numeric value");
+		}
+		
+		return (convertToDouble(numberOne) + convertToDouble(numberTwo)) / 2;
+	}
+	
+	@RequestMapping(value = "/square/{number}")
+	public Double squareRoot(
+				@PathVariable(value = "number") String number
+			) throws Exception {
+		
+		if(!isNumeric(number)) {
+			throw new UnsupportedMathOperationException("Please set a numeric value");
+		}
+		
+		if(convertToDouble(number) < 0) {
+			throw new UnsupportedMathOperationException("There is no square root of a negative number in real numbers");
+		}
+		
+		return Math.sqrt(convertToDouble(number));
+	}
 
 	private Double convertToDouble(String strNumber) {
 		
