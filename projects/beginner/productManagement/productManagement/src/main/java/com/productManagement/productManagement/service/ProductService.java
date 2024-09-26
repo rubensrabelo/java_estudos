@@ -12,6 +12,8 @@ import com.productManagement.productManagement.repositories.ProductRepository;
 import com.productManagement.productManagement.service.exceptions.DatabaseException;
 import com.productManagement.productManagement.service.exceptions.ResourceNotFoundException;
 
+import jakarta.persistence.EntityNotFoundException;
+
 public class ProductService {
 	
 	@Autowired
@@ -41,5 +43,25 @@ public class ProductService {
 		} catch(DataIntegrityViolationException e) {
 			throw new DatabaseException(e.getMessage());
 		}
+	}
+	
+	public Product update(Long id, Product product) {
+		try {
+			
+			Product updateProduct = repository.getReferenceById(id);
+			updateData(updateProduct, product);
+			
+			return repository.save(updateProduct);
+			
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException(id);
+		}
+	}
+
+	private void updateData(Product updateProduct, Product product) {
+		updateProduct.setName(product.getName());
+		updateProduct.setCategory(product.getCategory());
+		updateProduct.setPrice(product.getPrice());
+		updateProduct.setQuantity(product.getQuantity());
 	}
 }
