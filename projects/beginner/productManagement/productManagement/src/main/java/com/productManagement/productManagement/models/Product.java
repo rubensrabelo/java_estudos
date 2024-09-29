@@ -10,7 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 
 @Entity
 @Table(name = "products")
@@ -29,16 +29,23 @@ public class Product implements Serializable {
 	private String category;
 	
 	@NotNull(message = "Price is required")
-	@Positive(message = "Price must be greater than zero")
+	@PositiveOrZero(message = "Price must be greater than zero")
 	private Double price;
 	
 	@NotNull(message = "Quantity is required")
-	@Positive(message = "Quantity cannot be negative")
+	@PositiveOrZero(message = "Quantity cannot be negative")
 	private Integer quantity;
 	
 	public Product() {
 	}
-
+	
+	public Product(String name, String category, Double price, Integer quantity) {
+		this.name = name;
+		this.category = category;
+		this.price = price;
+		this.quantity = quantity;
+	}
+	
 	public Product(Long id, String name, String category, Double price, Integer quantity) {
 		this.id = id;
 		this.name = name;
