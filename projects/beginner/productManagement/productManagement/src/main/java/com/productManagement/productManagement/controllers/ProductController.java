@@ -19,6 +19,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.productManagement.productManagement.models.Product;
 import com.productManagement.productManagement.service.ProductService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping(value = "/products")
 public class ProductController {
@@ -65,7 +67,7 @@ public class ProductController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Product> insert(@RequestBody Product product) {
+	public ResponseEntity<Product> insert(@Valid @RequestBody Product product) {
 		product = service.insert(product);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(product.getId()).toUri();

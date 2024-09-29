@@ -8,6 +8,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 @Entity
 @Table(name = "products")
@@ -19,9 +22,18 @@ public class Product implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@NotBlank(message = "Name cannot be empty")
 	private String name;
+	
+	@NotBlank(message = "Category cannot be empty")
 	private String category;
+	
+	@NotNull(message = "Price is required")
+	@Positive(message = "Price must be greater than zero")
 	private Double price;
+	
+	@NotNull(message = "Quantity is required")
+	@Positive(message = "Quantity cannot be negative")
 	private Integer quantity;
 	
 	public Product() {
