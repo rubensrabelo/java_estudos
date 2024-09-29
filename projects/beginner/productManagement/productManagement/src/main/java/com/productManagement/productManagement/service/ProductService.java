@@ -33,6 +33,18 @@ public class ProductService {
 		return product.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
+	public List<Product> findByName(String name) {
+		return repository.findByNameContainingIgnoreCase(name);
+	}
+	
+	public List<Product> findByCategory(String category) {
+		return repository.findByCategory(category);
+	}
+	
+	public List<Product> findByNameAndCategory(String name, String Category) {
+		return repository.findByNameContainingIgnoreCaseAndCategory(name, Category);
+	}
+	
 	public Product insert(Product product) {
 		return repository.save(product);
 	}
