@@ -21,28 +21,22 @@ public class ProductService {
 	@Autowired
 	private ProductRepository repository;
 	
-	public List<Product> findAll() {
-		List<Product> products = repository.findAll();
-		
-		return products;
-	}
-	
 	public Product findById(Long id) {
 		Optional<Product> product = repository.findById(id);
 		
 		return product.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
-	public List<Product> findByName(String name) {
-		return repository.findByNameContainingIgnoreCase(name);
-	}
-	
-	public List<Product> findByCategory(String category) {
-		return repository.findByCategory(category);
-	}
-	
-	public List<Product> findByNameAndCategory(String name, String Category) {
-		return repository.findByNameContainingIgnoreCaseAndCategory(name, Category);
+	public List<Product> search(String name, String category) {
+		if(name != null && category != null) {
+			return repository.findByNameContainingIgnoreCaseAndCategory(name, category);
+		} else if(name != null) {
+			return repository.findByNameContainingIgnoreCase(name);
+		} else if(category != null) {
+			return repository.findByCategory(category);
+		} else {
+			return repository.findAll();
+		}
 	}
 	
 	public Product insert(Product product) {
