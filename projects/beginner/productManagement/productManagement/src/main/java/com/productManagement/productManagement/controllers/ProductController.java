@@ -42,26 +42,12 @@ public class ProductController {
 		return ResponseEntity.ok().body(product);
 	}
 	
-	@GetMapping(value = "/name")
-	public ResponseEntity<List<Product>> findByName(@RequestParam(value = "name") String name) {
-		List<Product> products = service.findByName(name);
-		
-		return ResponseEntity.ok().body(products);
-	}
-	
-	@GetMapping(value = "/category")
-	public ResponseEntity<List<Product>> findByCategory(@RequestParam(value = "category") String category) {
-		List<Product> products = service.findByCategory(category);
-		
-		return ResponseEntity.ok().body(products);
-	}
-	
 	@GetMapping(value = "/search")
-	public ResponseEntity<List<Product>> findByNameAndCategory(
-				@RequestParam(value = "name") String name,
-				@RequestParam(value = "category") String category
+	public ResponseEntity<List<Product>> findByName(
+				@RequestParam(value = "name", required = false) String name,
+				@RequestParam(value = "category", required = false) String category
 			) {
-		List<Product> products = service.findByNameAndCategory(name, category);
+		List<Product> products = service.search(name, category);
 		
 		return ResponseEntity.ok().body(products);
 	}
