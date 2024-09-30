@@ -21,6 +21,12 @@ public class ProductService {
 	@Autowired
 	private ProductRepository repository;
 	
+	public List<Product> findAll() {
+		List<Product> products = repository.findAll();
+		
+		return products;
+	}
+	
 	public Product findById(Long id) {
 		Optional<Product> product = repository.findById(id);
 		
