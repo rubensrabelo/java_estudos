@@ -3,6 +3,7 @@ package com.productManagement.productManagement.models;
 import java.io.Serializable;
 import java.util.Objects;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,13 +24,15 @@ public class Product implements Serializable {
 	private Long id;
 	
 	@NotBlank(message = "Name cannot be empty")
+	@Column(length = 100, nullable = false)
 	private String name;
 	
 	@NotBlank(message = "Category cannot be empty")
+	@Column(length = 100, nullable = false)
 	private String category;
 	
 	@NotNull(message = "Price is required")
-	@PositiveOrZero(message = "Price must be greater than zero")
+	@PositiveOrZero(message = "The price does not accept negative values")
 	private Double price;
 	
 	@NotNull(message = "Quantity is required")
@@ -46,13 +49,6 @@ public class Product implements Serializable {
 		this.quantity = quantity;
 	}
 	
-	public Product(Long id, String name, String category, Double price, Integer quantity) {
-		this.id = id;
-		this.name = name;
-		this.category = category;
-		this.price = price;
-		this.quantity = quantity;
-	}
 
 	public Long getId() {
 		return id;
