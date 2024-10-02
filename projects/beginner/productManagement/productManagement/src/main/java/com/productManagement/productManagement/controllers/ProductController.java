@@ -19,15 +19,25 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.productManagement.productManagement.models.Product;
 import com.productManagement.productManagement.service.ProductService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/products")
+@Tag(name = "Products", description = "Operations related to product management")
 public class ProductController {
 	
 	@Autowired
 	private ProductService service;
 	
+	@Operation(summary = "Retrieve all products", description = "Fetch a list of all available products")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Successfully retrieved the list of products"),
+			@ApiResponse(responseCode = "500", description = "Internal server error")
+	})
 	@GetMapping
 	public ResponseEntity<List<Product>> findAll() {
 		List<Product> products = service.findAll();
@@ -35,6 +45,11 @@ public class ProductController {
 		return ResponseEntity.ok().body(products);
 	}
 	
+	@Operation(summary = "Retrieve a product by ID", description = "Fetch a product by its unique identifier")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved the product"),
+        @ApiResponse(responseCode = "404", description = "Product not found")
+    })
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Product> findByID(@PathVariable Long id) {
 		Product product = service.findById(id);
@@ -42,6 +57,11 @@ public class ProductController {
 		return ResponseEntity.ok().body(product);
 	}
 	
+	@Operation(summary = "Search products", description = "Search for products by name and/or category")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Successfully retrieved the search results"),
+        @ApiResponse(responseCode = "400", description = "Invalid search parameters")
+    })
 	@GetMapping(value = "/search")
 	public ResponseEntity<List<Product>> findByName(
 				@RequestParam(value = "name", required = false) String name,
@@ -52,6 +72,11 @@ public class ProductController {
 		return ResponseEntity.ok().body(products);
 	}
 	
+	@Operation(summary = "Create a new product", description = "Insert a new product into the system")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "201", description = "Product successfully created"),
+        @ApiResponse(responseCode = "400", description = "Invalid input")
+    })
 	@PostMapping
 	public ResponseEntity<Product> insert(@Valid @RequestBody Product product) {
 		product = service.insert(product);
@@ -61,6 +86,11 @@ public class ProductController {
 		return ResponseEntity.created(uri).body(product);
 	}
 	
+	@Operation(summary = "Delete a product", description = "Remove a product from the system by its ID")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "204", description = "Product successfully deleted"),
+        @ApiResponse(responseCode = "404", description = "Product not found")
+    })
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.delete(id);
@@ -68,6 +98,12 @@ public class ProductController {
 		return ResponseEntity.noContent().build();
 	}
 	
+	 @Operation(summary = "Update a product", description = "Update the details of an existing product")
+	    @ApiResponses(value = {
+	        @ApiResponse(responseCode = "200", description = "Product successfully updated"),
+	        @ApiResponse(responseCode = "400", description = "Invalid input"),
+	        @ApiResponse(responseCode = "404", description = "Product not found")
+	    })
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Product> update(@PathVariable Long id, @Valid @RequestBody Product product){
 		product = service.update(id, product);
