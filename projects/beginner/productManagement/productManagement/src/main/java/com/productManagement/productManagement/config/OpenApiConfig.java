@@ -28,7 +28,7 @@ public class OpenApiConfig {
 						.license(new License()
 								.name("Apache 2.0")
 								.url("http://springdoc.org")))
-				.servers(Arrays.asList(new Server().url("https://api.example.com")))
+				.servers(Arrays.asList(new Server().url("http://localhost:8080")))
 				.addTagsItem(new io.swagger.v3.oas.models.tags.Tag()
 						.name("Products")
 						.description("Operations related to product management"))
