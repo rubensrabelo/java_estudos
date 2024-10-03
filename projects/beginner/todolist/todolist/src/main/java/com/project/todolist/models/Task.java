@@ -1,15 +1,32 @@
-package com.project.todolist.model;
+package com.project.todolist.models;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 import com.project.todolist.enums.TaskStatus;
 
-public class Task {
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "task")
+public class Task implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
 	private String name;
 	private String description;
+	
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
 	
@@ -18,12 +35,10 @@ public class Task {
 	public Task() {
 	}
 
-	public Task(String name, String description, LocalDateTime createdAt, LocalDateTime updatedAt, TaskStatus taskStatus) {
+	public Task(String name, String description, TaskStatus taskStatus) {
 		super();
 		this.name = name;
 		this.description = description;
-		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
 		setTaskStatus(taskStatus);
 	}
 
@@ -55,16 +70,8 @@ public class Task {
 		return createdAt;
 	}
 
-	public void setCreatedAt(LocalDateTime createdAt) {
-		this.createdAt = createdAt;
-	}
-
 	public LocalDateTime getUpdatedAt() {
 		return updatedAt;
-	}
-
-	public void setUpdatedAt(LocalDateTime updatedAt) {
-		this.updatedAt = updatedAt;
 	}
 
 	public TaskStatus getTaskStatus() {
@@ -74,6 +81,17 @@ public class Task {
 	public void setTaskStatus(TaskStatus taskStatus) {
 		if(taskStatus != null) 
 			this.taskStatus = taskStatus.getCode();
+	}
+	
+	@PrePersist
+	protected void onCreate() {
+		this.createdAt = LocalDateTime.now();
+		this.updatedAt = LocalDateTime.now();
+	}
+	
+	@PreUpdate
+	protected void onUpdate() {
+		this.updatedAt = LocalDateTime.now();
 	}
 
 	@Override
