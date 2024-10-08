@@ -37,6 +37,10 @@ public class TaskService {
 		return repository.save(task);
 	}
 	
+	public List<Task> findByTaskStatus(Integer taskStatus) {
+		return repository.findByTaskStatus(taskStatus);
+	}
+	
 	public void delete(Long id) {
 		try {
 			repository.deleteById(id);
