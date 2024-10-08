@@ -2,10 +2,11 @@ package com.course.course.unittests.mockito.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -19,6 +20,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.course.course.data.vo.v1.PersonVO;
+import com.course.course.exceptions.RequiredObjectsNullException;
 import com.course.course.models.Person;
 import com.course.course.repositories.PersonRepository;
 import com.course.course.services.PersonService;
@@ -44,7 +46,14 @@ class PersonServiceTest {
 
 	@Test
 	void testFindAll() {
-		fail("Not yet implemented");
+		List<Person> list = input.mockEntityList();
+		
+		when(repository.findAll()).thenReturn(list);
+
+		var people = service.findAll();
+
+		assertNotNull(people);
+		assertEquals(14, people.size());
 	}
 
 	@Test
@@ -88,10 +97,18 @@ class PersonServiceTest {
 		assertEquals("", result.getLastName());
 		assertEquals("", result.getGender());
 	}
-
+	
 	@Test
-	void testCreateV2() {
-		fail("Not yet implemented");
+	void testCreateWithNullPerson() throws Exception {
+		
+		Exception exception = assertThrows(RequiredObjectsNullException.class, () -> {
+			service.create(null);
+		});
+		
+		String expectedMessage = "It is not allowed to persist a null object!";
+		String actualMessage = exception.getMessage();
+		
+		assertTrue(actualMessage.contains(expectedMessage));
 	}
 
 	@Test
@@ -118,6 +135,19 @@ class PersonServiceTest {
 		assertEquals("", result.getFirstName());
 		assertEquals("", result.getLastName());
 		assertEquals("", result.getGender());
+	}
+	
+	@Test
+	void testUpdateWithNullPerson() throws Exception {
+		
+		Exception exception = assertThrows(RequiredObjectsNullException.class, () -> {
+			service.update(null);
+		});
+		
+		String expectedMessage = "It is not allowed to persist a null object!";
+		String actualMessage = exception.getMessage();
+		
+		assertTrue(actualMessage.contains(expectedMessage));
 	}
 
 	@Test
