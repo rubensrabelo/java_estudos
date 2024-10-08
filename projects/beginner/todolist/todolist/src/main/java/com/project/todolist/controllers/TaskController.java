@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.project.todolist.enums.TaskStatus;
 import com.project.todolist.models.Task;
 import com.project.todolist.services.TaskService;
 
@@ -41,7 +42,15 @@ public class TaskController {
 	}
 	
 	@GetMapping("/search")
-	public ResponseEntity<List<Task>> findByTaskStatus(@RequestParam Integer taskStatus) {
+	public ResponseEntity<List<Task>> findByTaskStatus(@RequestParam(value = "status") String status) {
+		TaskStatus taskStatus;
+		
+		try {
+			taskStatus = TaskStatus.valueOf(status.toUpperCase());
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.badRequest().body(null);
+		}
+		
 		List<Task> tasks = service.findByTaskStatus(taskStatus);
 		
 		return ResponseEntity.ok().body(tasks);

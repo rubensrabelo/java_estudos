@@ -8,6 +8,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.project.todolist.enums.TaskStatus;
 import com.project.todolist.models.Task;
 import com.project.todolist.repositories.TaskRepository;
 import com.project.todolist.services.exceptions.DatabaseException;
@@ -33,12 +34,12 @@ public class TaskService {
 		return task.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
-	public Task insert(Task task) {
-		return repository.save(task);
+	public List<Task> findByTaskStatus(TaskStatus taskStatus) {
+		return repository.findByTaskStatus(taskStatus.getCode());
 	}
 	
-	public List<Task> findByTaskStatus(Integer taskStatus) {
-		return repository.findByTaskStatus(taskStatus);
+	public Task insert(Task task) {
+		return repository.save(task);
 	}
 	
 	public void delete(Long id) {
