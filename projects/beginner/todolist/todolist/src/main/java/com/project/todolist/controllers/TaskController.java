@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -37,6 +38,13 @@ public class TaskController {
 		Task task = service.findById(id);
 		
 		return ResponseEntity.ok().body(task);
+	}
+	
+	@GetMapping("/search")
+	public ResponseEntity<List<Task>> findByTaskStatus(@RequestParam Integer taskStatus) {
+		List<Task> tasks = service.findByTaskStatus(taskStatus);
+		
+		return ResponseEntity.ok().body(tasks);
 	}
 	
 	@PostMapping
