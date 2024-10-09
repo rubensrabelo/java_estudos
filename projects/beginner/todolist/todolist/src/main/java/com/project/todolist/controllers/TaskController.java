@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.project.todolist.data.vo.v1.TaskVO;
 import com.project.todolist.enums.TaskStatus;
-import com.project.todolist.models.Task;
 import com.project.todolist.services.TaskService;
 
 @RestController
@@ -28,21 +28,21 @@ public class TaskController {
 	private TaskService service;
 	
 	@GetMapping
-	public ResponseEntity<List<Task>> findAll() {
-		List<Task> tasks = service.findAll();
+	public ResponseEntity<List<TaskVO>> findAll() {
+		List<TaskVO> tasks = service.findAll();
 		
 		return ResponseEntity.ok().body(tasks);
 	}
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Task> findById(@PathVariable("id") Long id) {
-		Task task = service.findById(id);
+	public ResponseEntity<TaskVO> findById(@PathVariable("id") Long id) {
+		TaskVO TaskVO = service.findById(id);
 		
-		return ResponseEntity.ok().body(task);
+		return ResponseEntity.ok().body(TaskVO);
 	}
 	
 	@GetMapping("/search")
-	public ResponseEntity<List<Task>> findByTaskStatus(@RequestParam(value = "status") String status) {
+	public ResponseEntity<List<TaskVO>> findByTaskStatus(@RequestParam(value = "status") String status) {
 		TaskStatus taskStatus;
 		
 		try {
@@ -51,18 +51,18 @@ public class TaskController {
 			return ResponseEntity.badRequest().body(null);
 		}
 		
-		List<Task> tasks = service.findByTaskStatus(taskStatus);
+		List<TaskVO> tasks = service.findByTaskStatus(taskStatus);
 		
 		return ResponseEntity.ok().body(tasks);
 	}
 	
 	@PostMapping
-	public ResponseEntity<Task> insert(@RequestBody Task task) {
-		task = service.insert(task);
+	public ResponseEntity<TaskVO> insert(@RequestBody TaskVO TaskVO) {
+		TaskVO = service.insert(TaskVO);
 		URI uri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/{id}")
-				.buildAndExpand(task.getId()).toUri();
+				.buildAndExpand(TaskVO.getId()).toUri();
 		
-		return ResponseEntity.created(uri).body(task);
+		return ResponseEntity.created(uri).body(TaskVO);
 	}
 	
 	@DeleteMapping(value = "/{id}")
@@ -72,8 +72,8 @@ public class TaskController {
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Task> update(@PathVariable("id") Long id, @RequestBody Task task) {
-		task = service.update(id, task);
-		return ResponseEntity.ok().body(task);
+	public ResponseEntity<TaskVO> update(@PathVariable("id") Long id, @RequestBody TaskVO TaskVO) {
+		TaskVO = service.update(id, TaskVO);
+		return ResponseEntity.ok().body(TaskVO);
 	}
 }

@@ -8,8 +8,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.project.todolist.data.vo.v1.TaskVO;
 import com.project.todolist.enums.TaskStatus;
-import com.project.todolist.models.Task;
 import com.project.todolist.repositories.TaskRepository;
 import com.project.todolist.services.exceptions.DatabaseException;
 import com.project.todolist.services.exceptions.ResourceNotFoundException;
@@ -22,24 +22,24 @@ public class TaskService {
 	@Autowired
 	private TaskRepository repository;
 	
-	public List<Task> findAll(){
-		List<Task> tasks = repository.findAll();
+	public List<TaskVO> findAll(){
+		List<TaskVO> tasks = repository.findAll();
 		
 		return tasks;
 	}
 	
-	public Task findById(Long id) {
-		Optional<Task> task = repository.findById(id);
+	public TaskVO findById(Long id) {
+		Optional<TaskVO> TaskVO = repository.findById(id);
 		
-		return task.orElseThrow(() -> new ResourceNotFoundException(id));
+		return TaskVO.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
-	public List<Task> findByTaskStatus(TaskStatus taskStatus) {
+	public List<TaskVO> findByTaskStatus(TaskStatus taskStatus) {
 		return repository.findByTaskStatus(taskStatus.getCode());
 	}
 	
-	public Task insert(Task task) {
-		return repository.save(task);
+	public TaskVO insert(TaskVO TaskVO) {
+		return repository.save(TaskVO);
 	}
 	
 	public void delete(Long id) {
@@ -52,19 +52,19 @@ public class TaskService {
 		}
 	}
 	
-	public Task update(Long id, Task task) {
+	public TaskVO update(Long id, TaskVO TaskVO) {
 		try {
-			Task entity = repository.findById(id).get();
-			updateData(entity, task);
+			TaskVO entity = repository.findById(id).get();
+			updateData(entity, TaskVO);
 			return repository.save(entity);
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException(id);
 		}
 	}
 
-	private void updateData(Task entity, Task task) {
-		entity.setName(task.getName());
-		entity.setDescription(task.getDescription());
-		entity.setTaskStatus(task.getTaskStatus());
+	private void updateData(TaskVO entity, TaskVO TaskVO) {
+		entity.setName(TaskVO.getName());
+		entity.setDescription(TaskVO.getDescription());
+		entity.setTaskStatus(TaskVO.getTaskStatus());
 	}
 }

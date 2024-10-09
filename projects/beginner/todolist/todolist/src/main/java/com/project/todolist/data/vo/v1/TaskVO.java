@@ -14,32 +14,30 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 
-@Entity
-@Table(name = "task")
 public class TaskVO implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
+	private Long id;	
 	private String name;
 	private String description;
-	
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
 	
-	private Integer taskStatus;
+	private TaskStatus taskStatus;
 	
 	public TaskVO() {
 	}
 
-	public TaskVO(String name, String description, TaskStatus taskStatus) {
+	public TaskVO(Long id, String name, String description, LocalDateTime createdAt, LocalDateTime updatedAt,
+			TaskStatus taskStatus) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.description = description;
-		setTaskStatus(taskStatus);
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+		this.taskStatus = taskStatus;
 	}
 
 	public Long getId() {
@@ -70,28 +68,24 @@ public class TaskVO implements Serializable {
 		return createdAt;
 	}
 
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
 	public LocalDateTime getUpdatedAt() {
 		return updatedAt;
 	}
 
+	public void setUpdatedAt(LocalDateTime updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
 	public TaskStatus getTaskStatus() {
-		return TaskStatus.valueOf(taskStatus);
+		return taskStatus;
 	}
 
 	public void setTaskStatus(TaskStatus taskStatus) {
-		if(taskStatus != null) 
-			this.taskStatus = taskStatus.getCode();
-	}
-	
-	@PrePersist
-	protected void onCreate() {
-		this.createdAt = LocalDateTime.now();
-		this.updatedAt = LocalDateTime.now();
-	}
-	
-	@PreUpdate
-	protected void onUpdate() {
-		this.updatedAt = LocalDateTime.now();
+		this.taskStatus = taskStatus;
 	}
 
 	@Override
@@ -109,7 +103,7 @@ public class TaskVO implements Serializable {
 			return false;
 		TaskVO other = (TaskVO) obj;
 		return Objects.equals(createdAt, other.createdAt) && Objects.equals(description, other.description)
-				&& Objects.equals(id, other.id) && Objects.equals(name, other.name)
-				&& Objects.equals(taskStatus, other.taskStatus) && Objects.equals(updatedAt, other.updatedAt);
+				&& Objects.equals(id, other.id) && Objects.equals(name, other.name) && taskStatus == other.taskStatus
+				&& Objects.equals(updatedAt, other.updatedAt);
 	}
 }
