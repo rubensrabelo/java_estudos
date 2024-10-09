@@ -1,5 +1,6 @@
 package com.project.todolist.unittest.mapper.mocks;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,20 +18,20 @@ public class MockTask {
 		return mockVO(0);
 	}
 	
-	public List<Task> mockEntityList() {
+	public List<Task> mockEntityList(Integer count) {
 		List<Task> tasks = new ArrayList<Task>();
 		
-		for(int i = 0; i < 14; i++) {
+		for(int i = 0; i < count; i++) {
 			tasks.add(mockEntity(i));
 		}
 		
 		return tasks;
 	}
 	
-	public List<TaskVO> mockVOList() {
+	public List<TaskVO> mockVOList(Integer count) {
 		List<TaskVO> tasks = new ArrayList<TaskVO>();
 		
-		for(int i = 0; i < 14; i++) {
+		for(int i = 0; i < count; i++) {
 			tasks.add(mockVO(i));
 		}
 		
@@ -52,6 +53,9 @@ public class MockTask {
 			task.setTaskStatus(TaskStatus.PENDING);
 		}
 		
+		task.onCreate();
+		task.onUpdate();
+		
 		return task;
 	}
 	
@@ -69,6 +73,9 @@ public class MockTask {
 		} else {
 			taskVO.setTaskStatus(TaskStatus.PENDING);
 		}
+		
+		taskVO.setCreatedAt(LocalDateTime.now());
+		taskVO.setUpdatedAt(LocalDateTime.now());
 		
 		return taskVO;
 	}
