@@ -1,4 +1,4 @@
-package com.project.todolist.controllers.exceptions;
+package com.project.todolist.controllers.exceptions.handler;
 
 import java.time.Instant;
 
@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.project.todolist.controllers.exceptions.StandardError;
 import com.project.todolist.services.exceptions.DatabaseException;
 import com.project.todolist.services.exceptions.ResourceNotFoundException;
 
