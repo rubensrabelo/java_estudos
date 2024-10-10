@@ -1,7 +1,6 @@
 package com.project.todolist.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -10,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import com.project.todolist.data.vo.v1.TaskVO;
 import com.project.todolist.enums.TaskStatus;
+import com.project.todolist.mapper.DozerMapper;
+import com.project.todolist.models.Task;
 import com.project.todolist.repositories.TaskRepository;
 import com.project.todolist.services.exceptions.DatabaseException;
 import com.project.todolist.services.exceptions.ResourceNotFoundException;
@@ -23,23 +24,31 @@ public class TaskService {
 	private TaskRepository repository;
 	
 	public List<TaskVO> findAll(){
-		List<TaskVO> tasks = repository.findAll();
+		List<TaskVO> entity = DozerMapper.parseListObjects(repository.findAll(), TaskVO.class);
 		
-		return tasks;
+		return entity;
 	}
 	
 	public TaskVO findById(Long id) {
-		Optional<TaskVO> TaskVO = repository.findById(id);
+		var entities = repository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException(id));
 		
-		return TaskVO.orElseThrow(() -> new ResourceNotFoundException(id));
+		return DozerMapper.parseObject(entities, TaskVO.class);
 	}
 	
 	public List<TaskVO> findByTaskStatus(TaskStatus taskStatus) {
-		return repository.findByTaskStatus(taskStatus.getCode());
+		List<TaskVO> entities = DozerMapper.parseListObjects(
+				repository.findByTaskStatus(taskStatus.getCode()), TaskVO.class);
+		
+		return entities;
 	}
 	
-	public TaskVO insert(TaskVO TaskVO) {
-		return repository.save(TaskVO);
+	public TaskVO insert(TaskVO taskVO) {
+		var entity = DozerMapper.parseObject(taskVO, Task.class);
+		
+		var vo = DozerMapper.parseObject(repository.save(entity), TaskVO.class);
+		
+		return vo;
 	}
 	
 	public void delete(Long id) {
@@ -52,19 +61,25 @@ public class TaskService {
 		}
 	}
 	
-	public TaskVO update(Long id, TaskVO TaskVO) {
+	public TaskVO update(Long id, TaskVO taskVO) {
 		try {
-			TaskVO entity = repository.findById(id).get();
-			updateData(entity, TaskVO);
-			return repository.save(entity);
+			Task entity = repository.findById(id).get();
+			
+			var taskEntity = DozerMapper.parseObject(taskVO, Task.class);
+			
+			updateData(entity, taskEntity);
+			
+			var vo = DozerMapper.parseObject(repository.save(entity), TaskVO.class);
+			
+			return vo;
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException(id);
 		}
 	}
 
-	private void updateData(TaskVO entity, TaskVO TaskVO) {
-		entity.setName(TaskVO.getName());
-		entity.setDescription(TaskVO.getDescription());
-		entity.setTaskStatus(TaskVO.getTaskStatus());
+	private void updateData(Task entity, Task Task) {
+		entity.setName(Task.getName());
+		entity.setDescription(Task.getDescription());
+		entity.setTaskStatus(Task.getTaskStatus());
 	}
 }
