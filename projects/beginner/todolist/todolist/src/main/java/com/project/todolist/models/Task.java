@@ -70,8 +70,16 @@ public class Task implements Serializable {
 		return createdAt;
 	}
 
+	public void setCreatedAt(LocalDateTime createAt) {
+		this.createdAt = createAt;
+	}
+
 	public LocalDateTime getUpdatedAt() {
 		return updatedAt;
+	}
+	
+	public void setUpdatedAt(LocalDateTime updatedAt) {
+		this.updatedAt = updatedAt;
 	}
 
 	public TaskStatus getTaskStatus() {

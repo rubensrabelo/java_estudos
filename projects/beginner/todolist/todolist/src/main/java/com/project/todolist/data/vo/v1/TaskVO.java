@@ -6,14 +6,6 @@ import java.util.Objects;
 
 import com.project.todolist.enums.TaskStatus;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
-import jakarta.persistence.Table;
-
 public class TaskVO implements Serializable {
 	
 	private static final long serialVersionUID = 1L;

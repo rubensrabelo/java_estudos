@@ -47,7 +47,7 @@ public class MockTask {
 		
 		if(number % 3 == 0) {
 			task.setTaskStatus(TaskStatus.COMPLETED);
-		} else if(number % 2 == 0) {
+		} else if(number % 2 == 0 && number % 3 != 0) {
 			task.setTaskStatus(TaskStatus.IN_PROGRESS);
 		} else {
 			task.setTaskStatus(TaskStatus.PENDING);
