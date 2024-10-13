@@ -4,7 +4,6 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +20,8 @@ import com.project.todolist.data.vo.v1.TaskVO;
 import com.project.todolist.enums.TaskStatus;
 import com.project.todolist.services.TaskService;
 
+import static com.project.todolist.util.MediaType.*;
+
 @RestController
 @RequestMapping(value = "/api/tasks/v1")
 public class TaskController {
@@ -28,7 +29,7 @@ public class TaskController {
 	@Autowired
 	private TaskService service;
 	
-	@GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	@GetMapping(produces = {APPLICATION_JSON, APPLICATION_XML, APPLICATION_YML})
 	public ResponseEntity<List<TaskVO>> findAll() {
 		List<TaskVO> tasks = service.findAll();
 		
@@ -36,7 +37,7 @@ public class TaskController {
 	}
 	
 	@GetMapping(value = "/{id}", 
-				produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
+				produces = {APPLICATION_JSON, APPLICATION_XML, APPLICATION_YML}
 			)
 	public ResponseEntity<TaskVO> findById(@PathVariable("id") Long id) {
 		TaskVO TaskVO = service.findById(id);
@@ -45,7 +46,7 @@ public class TaskController {
 	}
 	
 	@GetMapping(value = "/search", 
-				produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
+				produces = {APPLICATION_JSON, APPLICATION_XML, APPLICATION_YML}
 			)
 	public ResponseEntity<List<TaskVO>> findByTaskStatus(@RequestParam(value = "status") String status) {
 		TaskStatus taskStatus;
@@ -61,8 +62,8 @@ public class TaskController {
 		return ResponseEntity.ok().body(tasks);
 	}
 	
-	@PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
-				produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
+	@PostMapping(consumes = {APPLICATION_JSON, APPLICATION_XML, APPLICATION_YML},
+				produces = {APPLICATION_JSON, APPLICATION_XML, APPLICATION_YML}
 			)
 	public ResponseEntity<TaskVO> insert(@RequestBody TaskVO TaskVO) {
 		TaskVO = service.insert(TaskVO);
@@ -79,8 +80,8 @@ public class TaskController {
 	}
 	
 	@PutMapping(value = "/{id}", 
-			consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
-			produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
+			consumes = {APPLICATION_JSON, APPLICATION_XML, APPLICATION_YML},
+			produces = {APPLICATION_JSON, APPLICATION_XML, APPLICATION_YML}
 		)
 	public ResponseEntity<TaskVO> update(@PathVariable("id") Long id, @RequestBody TaskVO TaskVO) {
 		TaskVO = service.update(id, TaskVO);
