@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+//@CrossOrigin
 @RestController
 @RequestMapping(value = "/api/persons/v1")
 @Tag(name = "Users", description = "Operations related to user management")
@@ -42,6 +44,7 @@ public class PersonController {
 		return service.findAll();
 	}
 	
+	@CrossOrigin(origins = "http://localhost:8080")
 	@Operation(summary = "Retrieve a book by ID", description = "Fetch a product by its unique identifier")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Successfully retrieved the book"),
@@ -53,6 +56,7 @@ public class PersonController {
 		return service.findById(id);
 	}
 	
+	@CrossOrigin(origins = {"http://localhost:8080", "https://erudio.com.br"})
 	@Operation(summary = "Create a new book", description = "Insert a new book into the system")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Book successfully created"),
