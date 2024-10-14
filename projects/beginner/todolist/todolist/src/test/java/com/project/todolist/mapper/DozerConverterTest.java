@@ -28,7 +28,7 @@ public class DozerConverterTest {
 	public void parseEntityToVOTest() {
 		TaskVO output = DozerMapper.parseObject(inputObjects.mockEntity(), TaskVO.class);
 
-		assertEquals(Long.valueOf(0L), output.getId());
+		assertEquals(Long.valueOf(0L), output.getKey());
 		assertEquals("Task 0", output.getName());
 		assertEquals("Description 0", output.getDescription());
 		assertEquals(TaskStatus.COMPLETED, output.getTaskStatus());
@@ -52,7 +52,7 @@ public class DozerConverterTest {
 
 		TaskVO taskOne = tasks.get(1);
 
-		assertEquals(Long.valueOf(1L), taskOne.getId());
+		assertEquals(Long.valueOf(1L), taskOne.getKey());
 		assertEquals("Task 1", taskOne.getName());
 		assertEquals("Description 1", taskOne.getDescription());
 		assertEquals(TaskStatus.PENDING, taskOne.getTaskStatus());
@@ -71,7 +71,7 @@ public class DozerConverterTest {
 
 		TaskVO taskSix = tasks.get(6);
 
-		assertEquals(Long.valueOf(6L), taskSix.getId());
+		assertEquals(Long.valueOf(6L), taskSix.getKey());
 		assertEquals("Task 6", taskSix.getName());
 		assertEquals("Description 6", taskSix.getDescription());
 		assertEquals(TaskStatus.COMPLETED, taskSix.getTaskStatus());
@@ -88,7 +88,7 @@ public class DozerConverterTest {
 
 		TaskVO taskSeven = tasks.get(7);
 
-		assertEquals(Long.valueOf(7L), taskSeven.getId());
+		assertEquals(Long.valueOf(7L), taskSeven.getKey());
 		assertEquals("Task 7", taskSeven.getName());
 		assertEquals("Description 7", taskSeven.getDescription());
 		assertEquals(TaskStatus.PENDING, taskSeven.getTaskStatus());

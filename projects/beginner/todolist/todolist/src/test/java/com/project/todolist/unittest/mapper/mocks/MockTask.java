@@ -62,7 +62,7 @@ public class MockTask {
 	public TaskVO mockVO(Integer number) {
 		TaskVO taskVO = new TaskVO();
 		
-		taskVO.setId(number.longValue());
+		taskVO.setKey(number.longValue());
 		taskVO.setName("Task " + number);
 		taskVO.setDescription("Description " + number);
 		

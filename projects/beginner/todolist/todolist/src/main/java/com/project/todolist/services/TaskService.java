@@ -1,5 +1,8 @@
 package com.project.todolist.services;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +10,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.project.todolist.controllers.TaskController;
 import com.project.todolist.data.vo.v1.TaskVO;
 import com.project.todolist.enums.TaskStatus;
 import com.project.todolist.mapper.DozerMapper;
@@ -33,7 +37,11 @@ public class TaskService {
 		var entities = repository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException(id));
 		
-		return DozerMapper.parseObject(entities, TaskVO.class);
+		TaskVO vo = DozerMapper.parseObject(entities, TaskVO.class);
+		
+	    vo.add(linkTo(methodOn(TaskController.class).findById(id)).withSelfRel());
+	    
+	    return vo;
 	}
 	
 	public List<TaskVO> findByTaskStatus(TaskStatus taskStatus) {

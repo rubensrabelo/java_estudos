@@ -4,19 +4,23 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import com.github.dozermapper.core.Mapping;
 import com.project.todolist.enums.TaskStatus;
 
-public class TaskVO implements Serializable {
+public class TaskVO extends RepresentationModel<TaskVO> implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-
-	private Long id;	
+	
+	@Mapping("id")
+	private Long key;	
 	private String name;
 	private String description;
 	
@@ -39,8 +43,6 @@ public class TaskVO implements Serializable {
 
 	public TaskVO(Long id, String name, String description, LocalDateTime createdAt, LocalDateTime updatedAt,
 			TaskStatus taskStatus) {
-		super();
-		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.createdAt = createdAt;
@@ -48,12 +50,12 @@ public class TaskVO implements Serializable {
 		this.taskStatus = taskStatus;
 	}
 
-	public Long getId() {
-		return id;
+	public Long getKey() {
+		return key;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setKey(Long key) {
+		this.key = key;
 	}
 
 	public String getName() {
@@ -98,20 +100,23 @@ public class TaskVO implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(createdAt, description, id, name, taskStatus, updatedAt);
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(createdAt, description, key, name, taskStatus, updatedAt);
+		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		TaskVO other = (TaskVO) obj;
 		return Objects.equals(createdAt, other.createdAt) && Objects.equals(description, other.description)
-				&& Objects.equals(id, other.id) && Objects.equals(name, other.name) && taskStatus == other.taskStatus
+				&& Objects.equals(key, other.key) && Objects.equals(name, other.name) && taskStatus == other.taskStatus
 				&& Objects.equals(updatedAt, other.updatedAt);
 	}
 }

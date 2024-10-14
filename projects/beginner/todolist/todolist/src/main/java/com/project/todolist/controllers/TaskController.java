@@ -68,7 +68,7 @@ public class TaskController {
 	public ResponseEntity<TaskVO> insert(@RequestBody TaskVO TaskVO) {
 		TaskVO = service.insert(TaskVO);
 		URI uri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/{id}")
-				.buildAndExpand(TaskVO.getId()).toUri();
+				.buildAndExpand(TaskVO.getKey()).toUri();
 		
 		return ResponseEntity.created(uri).body(TaskVO);
 	}
