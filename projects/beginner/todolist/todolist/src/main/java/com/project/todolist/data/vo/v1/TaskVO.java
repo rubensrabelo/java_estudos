@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.project.todolist.enums.TaskStatus;
 
 public class TaskVO implements Serializable {
@@ -13,7 +14,11 @@ public class TaskVO implements Serializable {
 	private Long id;	
 	private String name;
 	private String description;
+	
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy HH:mm:ss")
 	private LocalDateTime createdAt;
+	
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy HH:mm:ss")
 	private LocalDateTime updatedAt;
 	
 	private TaskStatus taskStatus;
