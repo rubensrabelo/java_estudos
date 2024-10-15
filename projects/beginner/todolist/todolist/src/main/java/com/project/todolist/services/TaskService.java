@@ -28,16 +28,20 @@ public class TaskService {
 	private TaskRepository repository;
 	
 	public List<TaskVO> findAll(){
-		List<TaskVO> entity = DozerMapper.parseListObjects(repository.findAll(), TaskVO.class);
+		var entities = DozerMapper.parseListObjects(repository.findAll(), TaskVO.class);
 		
-		return entity;
+		entities
+			.stream()
+			.forEach(t -> t.add(linkTo(methodOn(TaskController.class).findById(t.getKey())).withSelfRel()));;
+		
+		return entities;
 	}
 	
 	public TaskVO findById(Long id) {
-		var entities = repository.findById(id)
+		var entitie = repository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException(id));
 		
-		TaskVO vo = DozerMapper.parseObject(entities, TaskVO.class);
+		var vo = DozerMapper.parseObject(entitie, TaskVO.class);
 		
 	    vo.add(linkTo(methodOn(TaskController.class).findById(id)).withSelfRel());
 	    
@@ -45,8 +49,12 @@ public class TaskService {
 	}
 	
 	public List<TaskVO> findByTaskStatus(TaskStatus taskStatus) {
-		List<TaskVO> entities = DozerMapper.parseListObjects(
+		var entities = DozerMapper.parseListObjects(
 				repository.findByTaskStatus(taskStatus.getCode()), TaskVO.class);
+		
+		entities
+			.stream()
+			.forEach(t -> t.add(linkTo(methodOn(TaskController.class).findById(t.getKey())).withSelfRel()));;
 		
 		return entities;
 	}
@@ -55,6 +63,8 @@ public class TaskService {
 		var entity = DozerMapper.parseObject(taskVO, Task.class);
 		
 		var vo = DozerMapper.parseObject(repository.save(entity), TaskVO.class);
+		
+		vo.add(linkTo(methodOn(TaskController.class).findById(vo.getKey())).withSelfRel());
 		
 		return vo;
 	}
@@ -78,6 +88,8 @@ public class TaskService {
 			updateData(entity, taskEntity);
 			
 			var vo = DozerMapper.parseObject(repository.save(entity), TaskVO.class);
+			
+			vo.add(linkTo(methodOn(TaskController.class).findById(vo.getKey())).withSelfRel());
 			
 			return vo;
 		} catch (EntityNotFoundException e) {

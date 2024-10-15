@@ -8,6 +8,7 @@ import org.springframework.hateoas.RepresentationModel;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
@@ -15,11 +16,13 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.github.dozermapper.core.Mapping;
 import com.project.todolist.enums.TaskStatus;
 
+@JsonPropertyOrder({"id", "name", "description", "taskStatus", "created_at", "updated_at"})
 public class TaskVO extends RepresentationModel<TaskVO> implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
 	@Mapping("id")
+	@JsonProperty("id")
 	private Long key;	
 	private String name;
 	private String description;
