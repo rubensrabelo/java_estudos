@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.project.todolist.controllers.exceptions.StandardError;
 import com.project.todolist.services.exceptions.DatabaseException;
+import com.project.todolist.services.exceptions.RequiredObjectIsNullException;
 import com.project.todolist.services.exceptions.ResourceNotFoundException;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,8 +27,17 @@ public class ResourceExceptionHandler {
 	}
 	
 	@ExceptionHandler(DatabaseException.class)
-	public ResponseEntity<StandardError> databse(DatabaseException e, HttpServletRequest request) {
+	public ResponseEntity<StandardError> database(DatabaseException e, HttpServletRequest request) {
 		String error = "Database error";
+		HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+		StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
+		
+		return ResponseEntity.status(status).body(err);
+	}
+	
+	@ExceptionHandler(RequiredObjectIsNullException.class)
+	public ResponseEntity<StandardError> handleRequiredObjectIsNullException(RequiredObjectIsNullException e, HttpServletRequest request) {
+		String error = "Null object error";
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 		StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
 		

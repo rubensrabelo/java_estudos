@@ -17,6 +17,7 @@ import com.project.todolist.mapper.DozerMapper;
 import com.project.todolist.models.Task;
 import com.project.todolist.repositories.TaskRepository;
 import com.project.todolist.services.exceptions.DatabaseException;
+import com.project.todolist.services.exceptions.RequiredObjectIsNullException;
 import com.project.todolist.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -60,6 +61,10 @@ public class TaskService {
 	}
 	
 	public TaskVO insert(TaskVO taskVO) {
+		
+		if(taskVO == null)
+			throw new RequiredObjectIsNullException();
+		
 		var entity = DozerMapper.parseObject(taskVO, Task.class);
 		
 		var vo = DozerMapper.parseObject(repository.save(entity), TaskVO.class);
@@ -80,6 +85,9 @@ public class TaskService {
 	}
 	
 	public TaskVO update(Long id, TaskVO taskVO) {
+		if(taskVO == null) 
+			throw new RequiredObjectIsNullException();
+		
 		try {
 			Task entity = repository.findById(id).get();
 			
@@ -94,7 +102,7 @@ public class TaskService {
 			return vo;
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException(id);
-		}
+		} 
 	}
 
 	private void updateData(Task entity, Task Task) {

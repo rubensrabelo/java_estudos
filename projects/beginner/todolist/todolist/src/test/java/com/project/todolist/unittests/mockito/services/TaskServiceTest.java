@@ -1,12 +1,15 @@
 package com.project.todolist.unittests.mockito.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,6 +26,7 @@ import com.project.todolist.enums.TaskStatus;
 import com.project.todolist.models.Task;
 import com.project.todolist.repositories.TaskRepository;
 import com.project.todolist.services.TaskService;
+import com.project.todolist.services.exceptions.RequiredObjectIsNullException;
 import com.project.todolist.unittest.mapper.mocks.MockTask;
 
 @TestInstance(Lifecycle.PER_CLASS)
@@ -45,7 +49,50 @@ class TaskServiceTest {
 
 	@Test
 	void testFindAll() {
-		fail("Not yet implemented");
+		List<Task> list = input.mockEntityList(9);
+		
+		when(repository.findAll()).thenReturn(list);
+
+		var tasks = service.findAll();
+		
+		assertNotNull(tasks);
+		assertEquals(9, tasks.size());
+		
+		var taskOne = tasks.get(1);
+
+		assertNotNull(taskOne);
+		assertNotNull(taskOne.getKey());
+		assertNotNull(taskOne.getLinks());
+		
+		assertTrue(taskOne.toString().contains("links: [</api/tasks/v1/1>;rel=\"self\"]"));
+
+		assertEquals("Task 1", taskOne.getName());
+		assertEquals("Description 1", taskOne.getDescription());
+		assertEquals(TaskStatus.PENDING, taskOne.getTaskStatus());
+		
+		var taskSix = tasks.get(6);
+		
+		assertNotNull(taskSix);
+		assertNotNull(taskSix.getKey());
+		assertNotNull(taskSix.getLinks());
+		
+		assertTrue(taskSix.toString().contains("links: [</api/tasks/v1/6>;rel=\"self\"]"));
+		
+		assertEquals("Task 6", taskSix.getName());
+		assertEquals("Description 6", taskSix.getDescription());
+		assertEquals(TaskStatus.COMPLETED, taskSix.getTaskStatus());
+		
+		var taskEight = tasks.get(8);
+		
+		assertNotNull(taskEight);
+		assertNotNull(taskEight.getKey());
+		assertNotNull(taskEight.getLinks());
+		
+		assertTrue(taskEight.toString().contains("links: [</api/tasks/v1/8>;rel=\"self\"]"));
+		
+		assertEquals("Task 8", taskEight.getName());
+		assertEquals("Description 8", taskEight.getDescription());
+		assertEquals(TaskStatus.IN_PROGRESS, taskEight.getTaskStatus());
 	}
 
 	@Test
@@ -70,7 +117,29 @@ class TaskServiceTest {
 
 	@Test
 	void testFindByTaskStatus() {
-		fail("Not yet implemented");
+		List<Task> list = input.mockEntityList(7);
+		
+		List<Task> tasksCompleted = list.stream()
+				.filter(t -> t.getTaskStatus() == TaskStatus.IN_PROGRESS)
+				.collect(Collectors.toList());
+		
+		when(repository.findByTaskStatus(TaskStatus.IN_PROGRESS.getCode())).thenReturn(tasksCompleted);
+		
+		List<TaskVO> results = service.findByTaskStatus(TaskStatus.IN_PROGRESS);
+		
+		assertFalse(results.isEmpty());
+		
+		TaskVO taskOne = results.get(0);
+		
+		assertNotNull(taskOne);
+		assertNotNull(taskOne.getKey());
+		assertNotNull(taskOne.getLinks());
+		
+		assertTrue(taskOne.toString().contains("links: [</api/tasks/v1/2>;rel=\"self\"]"));
+		
+		assertEquals("Task 2", taskOne.getName());
+	    assertEquals("Description 2", taskOne.getDescription());
+	    assertEquals(TaskStatus.IN_PROGRESS, taskOne.getTaskStatus());
 	}
 
 	@Test
@@ -97,6 +166,18 @@ class TaskServiceTest {
 		assertEquals("Task 1", result.getName());
 		assertEquals("Description 1", result.getDescription());
 		assertEquals(TaskStatus.PENDING, result.getTaskStatus());
+	}
+	
+	@Test
+	void testInsertWithNullTask() {
+		Exception exception = assertThrows(RequiredObjectIsNullException.class, () -> {
+			service.insert(null);
+		});
+		
+		String expectedMessage = "It is not allowed to persist a null object!";
+		String actualMessage = exception.getMessage();
+		
+		assertTrue(actualMessage.contains(expectedMessage));
 	}
 
 	@Test
@@ -132,5 +213,16 @@ class TaskServiceTest {
 		assertEquals("Description 1", result.getDescription());
 		assertEquals(TaskStatus.PENDING, result.getTaskStatus());
 	}
-
+	
+	@Test
+	void testUpdateWithNullTask() {
+		Exception exception = assertThrows(RequiredObjectIsNullException.class, () -> {
+			service.update(1L, null);
+		});
+		
+		String expectedMessage = "It is not allowed to persist a null object!";
+		String actualMessage = exception.getMessage();
+		
+		assertTrue(actualMessage.contains(expectedMessage));
+	}
 }
