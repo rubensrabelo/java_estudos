@@ -1,0 +1,13 @@
+server:
+  port: 8888
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/to_do_list
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+springdoc:
+  pathsToMatch: /api/**/v1/**
+  swagger-ui:
+    use-root-path: true
