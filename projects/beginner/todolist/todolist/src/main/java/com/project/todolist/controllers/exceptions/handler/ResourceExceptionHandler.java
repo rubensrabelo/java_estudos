@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.project.todolist.controllers.exceptions.StandardError;
 import com.project.todolist.services.exceptions.DatabaseException;
+import com.project.todolist.services.exceptions.InvalidTaskStatusException;
 import com.project.todolist.services.exceptions.RequiredObjectIsNullException;
 import com.project.todolist.services.exceptions.ResourceNotFoundException;
 
@@ -38,6 +39,15 @@ public class ResourceExceptionHandler {
 	@ExceptionHandler(RequiredObjectIsNullException.class)
 	public ResponseEntity<StandardError> handleRequiredObjectIsNullException(RequiredObjectIsNullException e, HttpServletRequest request) {
 		String error = "Null object error";
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
+		
+		return ResponseEntity.status(status).body(err);
+	}
+	
+	@ExceptionHandler(InvalidTaskStatusException.class)
+	public ResponseEntity<StandardError> handleInvalidTaskStatusException(InvalidTaskStatusException  e, HttpServletRequest request) {
+		String error = "Invalid task status error";
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 		StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
 		
