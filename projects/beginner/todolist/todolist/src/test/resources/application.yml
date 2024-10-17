@@ -1,5 +1,7 @@
 server:
   port: 8888
+cors:
+  originPatterns: http://localhost:3000,http://localhost:8080
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/to_do_list
