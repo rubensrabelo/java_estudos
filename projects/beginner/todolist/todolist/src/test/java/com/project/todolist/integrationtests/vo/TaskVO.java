@@ -4,23 +4,29 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.project.todolist.enums.TaskStatus;
 
 public class TaskVO implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
-	
-	private Long id;	
+
+	private Long id;
 	private String name;
 	private String description;
+	
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+	@JsonProperty("created_at")
 	private LocalDateTime createdAt;
+	
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+	@JsonProperty("updated_at")
 	private LocalDateTime updatedAt;
-	
+
 	private TaskStatus taskStatus;
-	
+
 	public TaskVO() {
-		this.createdAt = LocalDateTime.now(); // Define a data/hora atual
-	    this.updatedAt = LocalDateTime.now(); // Define a data/hora atual
 	}
 
 	public TaskVO(Long id, String name, String description, LocalDateTime createdAt, LocalDateTime updatedAt,

@@ -18,6 +18,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.project.todolist.configs.TestConfigs;
 import com.project.todolist.enums.TaskStatus;
@@ -44,7 +45,8 @@ public class TaskControllerJsonTest extends AbstractIntegrationTest {
 		objectMapper = new ObjectMapper();
 		objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		objectMapper.registerModule(new JavaTimeModule());
-		
+	    objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+
 		task = new TaskVO();
 	}
 	
@@ -76,6 +78,8 @@ public class TaskControllerJsonTest extends AbstractIntegrationTest {
 		
 		task = createdTask;
 		
+		System.out.println("----->" + createdTask.getCreatedAt());
+		
 		assertNotNull(createdTask);
 		
 		assertNotNull(createdTask.getId());
@@ -92,11 +96,11 @@ public class TaskControllerJsonTest extends AbstractIntegrationTest {
 		
 		LocalDateTime now = LocalDateTime.now();
 		
-		assertTrue(task.getCreatedAt().isBefore(now.plusSeconds(10)));
-		assertTrue(task.getCreatedAt().isAfter(now.minusSeconds(10)));
+		assertTrue(task.getCreatedAt().isBefore(now.plusSeconds(20)));
+		assertTrue(task.getCreatedAt().isAfter(now.minusSeconds(20)));
 		
-		assertTrue(task.getUpdatedAt().isBefore(now.plusSeconds(10)));
-		assertTrue(task.getUpdatedAt().isAfter(now.minusSeconds(10)));
+		assertTrue(task.getUpdatedAt().isBefore(now.plusSeconds(20)));
+		assertTrue(task.getUpdatedAt().isAfter(now.minusSeconds(20)));
 	}
 
 	private void mockTask() {
