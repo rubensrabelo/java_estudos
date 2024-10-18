@@ -1,9 +1,12 @@
 package com.project.todolist.integrationtests.controller.withjson;
 
 import static io.restassured.RestAssured.given;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
@@ -16,7 +19,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.project.todolist.configs.TestConfigs;
+import com.project.todolist.enums.TaskStatus;
 import com.project.todolist.integrationtests.testcontainers.AbstractIntegrationTest;
 import com.project.todolist.integrationtests.vo.TaskVO;
 
@@ -39,6 +46,7 @@ public class TaskControllerJsonTest extends AbstractIntegrationTest {
 	public static void setup() {
 		objectMapper = new ObjectMapper();
 		objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		objectMapper.registerModule(new JavaTimeModule());
 		
 		task = new TaskVO();
 	}
@@ -62,21 +70,41 @@ public class TaskControllerJsonTest extends AbstractIntegrationTest {
 							.when()
 							.post()
 						.then()
-							.statusCode(200)
+							.statusCode(201)
 						.extract()
 							.body()
 								.asString();
 		
-		TaskVO created = objectMapper.readValue(content, TaskVO.class);
+		TaskVO createdTask = objectMapper.readValue(content, TaskVO.class);
 		
-		assertTrue(content.contains("Swagger UI"));
+		task = createdTask;
+		
+		assertNotNull(createdTask);
+		
+		assertNotNull(createdTask.getId());
+		assertNotNull(createdTask.getName());
+		assertNotNull(createdTask.getDescription());
+		assertNotNull(createdTask.getTaskStatus());
+		assertNotNull(createdTask.getCreatedAt());
+		assertNotNull(createdTask.getUpdatedAt());
+		assertTrue(createdTask.getId() > 0);
+		
+		assertEquals("Excel", createdTask.getName());
+		assertEquals("Estudar a ferramenta excel", createdTask.getDescription());
+		assertEquals(TaskStatus.COMPLETED, createdTask.getTaskStatus());
+		
+		LocalDateTime now = LocalDateTime.now();
+		
+		assertTrue(task.getCreatedAt().isBefore(now.plusSeconds(10)));
+		assertTrue(task.getCreatedAt().isAfter(now.minusSeconds(10)));
+		
+		assertTrue(task.getUpdatedAt().isBefore(now.plusSeconds(10)));
+		assertTrue(task.getUpdatedAt().isAfter(now.minusSeconds(10)));
 	}
 
 	private void mockTask() {
 		task.setName("Excel");
 		task.setDescription("Estudar a ferramenta excel");
-		task.setCreatedAt(LocalDateTime.now());
-		task.setUpdatedAt(LocalDateTime.now());
+		task.setTaskStatus(TaskStatus.COMPLETED);
 	}
-
 }

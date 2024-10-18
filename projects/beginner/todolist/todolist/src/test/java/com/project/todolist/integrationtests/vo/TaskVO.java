@@ -19,6 +19,8 @@ public class TaskVO implements Serializable {
 	private TaskStatus taskStatus;
 	
 	public TaskVO() {
+		this.createdAt = LocalDateTime.now(); // Define a data/hora atual
+	    this.updatedAt = LocalDateTime.now(); // Define a data/hora atual
 	}
 
 	public TaskVO(Long id, String name, String description, LocalDateTime createdAt, LocalDateTime updatedAt,
