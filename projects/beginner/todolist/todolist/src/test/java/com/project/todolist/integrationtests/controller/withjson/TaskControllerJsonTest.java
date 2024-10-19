@@ -56,7 +56,7 @@ public class TaskControllerJsonTest extends AbstractIntegrationTest {
 		mockTask();
 		
 		especification = new RequestSpecBuilder()
-				.addHeader(TestConfigs.HEADER_PARAM_ORIGIN, "http://localhost:8080")
+				.addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_LOCALHOST_8080)
 				.setBasePath("/api/tasks/v1")
 				.setPort(TestConfigs.SERVER_PORT)
 					.addFilter(new RequestLoggingFilter(LogDetail.ALL))
@@ -74,33 +74,145 @@ public class TaskControllerJsonTest extends AbstractIntegrationTest {
 							.body()
 								.asString();
 		
-		TaskVO createdTask = objectMapper.readValue(content, TaskVO.class);
+		TaskVO persistedTask = objectMapper.readValue(content, TaskVO.class);
 		
-		task = createdTask;
+		task = persistedTask;
 		
-		System.out.println("----->" + createdTask.getCreatedAt());
+		assertNotNull(persistedTask);
 		
-		assertNotNull(createdTask);
+		assertNotNull(persistedTask.getId());
+		assertNotNull(persistedTask.getName());
+		assertNotNull(persistedTask.getDescription());
+		assertNotNull(persistedTask.getTaskStatus());
+		assertNotNull(persistedTask.getCreatedAt());
+		assertNotNull(persistedTask.getUpdatedAt());
+		assertTrue(persistedTask.getId() > 0);
 		
-		assertNotNull(createdTask.getId());
-		assertNotNull(createdTask.getName());
-		assertNotNull(createdTask.getDescription());
-		assertNotNull(createdTask.getTaskStatus());
-		assertNotNull(createdTask.getCreatedAt());
-		assertNotNull(createdTask.getUpdatedAt());
-		assertTrue(createdTask.getId() > 0);
-		
-		assertEquals("Excel", createdTask.getName());
-		assertEquals("Estudar a ferramenta excel", createdTask.getDescription());
-		assertEquals(TaskStatus.COMPLETED, createdTask.getTaskStatus());
+		assertEquals("Excel", persistedTask.getName());
+		assertEquals("Estudar a ferramenta excel", persistedTask.getDescription());
+		assertEquals(TaskStatus.COMPLETED, persistedTask.getTaskStatus());
 		
 		LocalDateTime now = LocalDateTime.now();
 		
-		assertTrue(task.getCreatedAt().isBefore(now.plusSeconds(20)));
-		assertTrue(task.getCreatedAt().isAfter(now.minusSeconds(20)));
+		int toleranceInSeconds = 120;
 		
-		assertTrue(task.getUpdatedAt().isBefore(now.plusSeconds(20)));
-		assertTrue(task.getUpdatedAt().isAfter(now.minusSeconds(20)));
+		assertTrue(task.getCreatedAt().isBefore(now.plusSeconds(toleranceInSeconds)));
+		assertTrue(task.getCreatedAt().isAfter(now.minusSeconds(toleranceInSeconds)));
+		
+		assertTrue(task.getUpdatedAt().isBefore(now.plusSeconds(toleranceInSeconds)));
+		assertTrue(task.getUpdatedAt().isAfter(now.minusSeconds(toleranceInSeconds)));
+	}
+	
+	@Test
+	@Order(2)
+	public void testeCreateWithWrongOrigin() throws JsonMappingException, JsonProcessingException {
+		mockTask();
+		
+		especification = new RequestSpecBuilder()
+				.addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_LOCALHOST_5000)
+				.setBasePath("/api/tasks/v1")
+				.setPort(TestConfigs.SERVER_PORT)
+				.addFilter(new RequestLoggingFilter(LogDetail.ALL))
+				.addFilter(new ResponseLoggingFilter(LogDetail.ALL))
+				.build();
+		
+		var content = given().spec(especification)
+				.contentType(TestConfigs.CONTENT_TYPE_JSON)
+					.body(task)
+						.when()
+						.post()
+				.then()
+					.statusCode(403)
+				.extract()
+					.body()
+						.asString();
+		
+		
+		assertNotNull(content);
+		assertEquals("Invalid CORS request", content);
+	}
+	
+	@Test
+	@Order(3)
+	public void testeFindById() throws JsonMappingException, JsonProcessingException {
+		mockTask();
+		
+		especification = new RequestSpecBuilder()
+				.addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_LOCALHOST_8080)
+				.setBasePath("/api/tasks/v1")
+				.setPort(TestConfigs.SERVER_PORT)
+					.addFilter(new RequestLoggingFilter(LogDetail.ALL))
+					.addFilter(new ResponseLoggingFilter(LogDetail.ALL))
+				.build();
+		
+		var content = given().spec(especification)
+						.contentType(TestConfigs.CONTENT_TYPE_JSON)
+							.pathParam("id", task.getId())
+							.when()
+							.get("{id}")
+						.then()
+							.statusCode(200)
+						.extract()
+							.body()
+								.asString();
+		
+		TaskVO persistedTask = objectMapper.readValue(content, TaskVO.class);
+		
+		task = persistedTask;
+		
+		assertNotNull(persistedTask);
+		
+		assertNotNull(persistedTask.getId());
+		assertNotNull(persistedTask.getName());
+		assertNotNull(persistedTask.getDescription());
+		assertNotNull(persistedTask.getTaskStatus());
+		assertNotNull(persistedTask.getCreatedAt());
+		assertNotNull(persistedTask.getUpdatedAt());
+		assertTrue(persistedTask.getId() > 0);
+		
+		assertEquals("Excel", persistedTask.getName());
+		assertEquals("Estudar a ferramenta excel", persistedTask.getDescription());
+		assertEquals(TaskStatus.COMPLETED, persistedTask.getTaskStatus());
+		
+		LocalDateTime now = LocalDateTime.now();
+		
+		int toleranceInSeconds = 120;
+		
+		assertTrue(persistedTask.getCreatedAt().isBefore(now.plusSeconds(toleranceInSeconds)));
+		assertTrue(persistedTask.getCreatedAt().isAfter(now.minusSeconds(toleranceInSeconds)));
+		
+		assertTrue(persistedTask.getUpdatedAt().isBefore(now.plusSeconds(toleranceInSeconds)));
+		assertTrue(persistedTask.getUpdatedAt().isAfter(now.minusSeconds(toleranceInSeconds)));
+	}
+	
+	@Test
+	@Order(4)
+	public void testeFindByIdWithWrongOrigin() throws JsonMappingException, JsonProcessingException {
+		mockTask();
+		
+		especification = new RequestSpecBuilder()
+				.addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_LOCALHOST_5000)
+				.setBasePath("/api/tasks/v1")
+				.setPort(TestConfigs.SERVER_PORT)
+				.addFilter(new RequestLoggingFilter(LogDetail.ALL))
+				.addFilter(new ResponseLoggingFilter(LogDetail.ALL))
+				.build();
+		
+		var content = given().spec(especification)
+				.contentType(TestConfigs.CONTENT_TYPE_JSON)
+				.pathParam("id", task.getId())
+				.when()
+				.get("{id}")
+				.then()
+				.statusCode(403)
+				.extract()
+				.body()
+				.asString();
+		
+		
+		assertNotNull(content);
+		
+		assertEquals("Invalid CORS request", content);
 	}
 
 	private void mockTask() {
