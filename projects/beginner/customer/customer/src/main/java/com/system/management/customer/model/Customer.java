@@ -1,6 +1,7 @@
 package com.system.management.customer.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class Customer implements Serializable {
@@ -12,15 +13,17 @@ public class Customer implements Serializable {
 	private String lastName;
 	private String email;
 	private String phoneNumber;
+	private LocalDate birthDate;
 	
 	public Customer() {
 	}
 
-	public Customer(String firstName, String lastName, String email, String phoneNumber) {
+	public Customer(String firstName, String lastName, String email, String phoneNumber, LocalDate birthDate) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.phoneNumber = phoneNumber;
+		this.birthDate = birthDate;
 	}
 
 	public Long getId() {
@@ -63,9 +66,17 @@ public class Customer implements Serializable {
 		this.phoneNumber = phoneNumber;
 	}
 
+	public LocalDate getBirthDate() {
+		return birthDate;
+	}
+
+	public void setBirthDate(LocalDate birthDate) {
+		this.birthDate = birthDate;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(email, firstName, id, lastName, phoneNumber);
+		return Objects.hash(birthDate, email, firstName, id, lastName, phoneNumber);
 	}
 
 	@Override
@@ -77,8 +88,8 @@ public class Customer implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Customer other = (Customer) obj;
-		return Objects.equals(email, other.email) && Objects.equals(firstName, other.firstName)
-				&& Objects.equals(id, other.id) && Objects.equals(lastName, other.lastName)
-				&& Objects.equals(phoneNumber, other.phoneNumber);
+		return Objects.equals(birthDate, other.birthDate) && Objects.equals(email, other.email)
+				&& Objects.equals(firstName, other.firstName) && Objects.equals(id, other.id)
+				&& Objects.equals(lastName, other.lastName) && Objects.equals(phoneNumber, other.phoneNumber);
 	}
 }
