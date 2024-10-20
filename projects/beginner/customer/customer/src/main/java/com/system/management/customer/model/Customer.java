@@ -13,17 +13,14 @@ public class Customer implements Serializable {
 	private String email;
 	private String phoneNumber;
 	
-	private Address address;
-	
 	public Customer() {
 	}
 
-	public Customer(String firstName, String lastName, String email, String phoneNumber, Address address) {
+	public Customer(String firstName, String lastName, String email, String phoneNumber) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.phoneNumber = phoneNumber;
-		this.address = address;
 	}
 
 	public Long getId() {
@@ -66,17 +63,9 @@ public class Customer implements Serializable {
 		this.phoneNumber = phoneNumber;
 	}
 
-	public Address getAddress() {
-		return address;
-	}
-
-	public void setAddress(Address address) {
-		this.address = address;
-	}
-
 	@Override
 	public int hashCode() {
-		return Objects.hash(address, email, firstName, id, lastName, phoneNumber);
+		return Objects.hash(email, firstName, id, lastName, phoneNumber);
 	}
 
 	@Override
@@ -88,8 +77,8 @@ public class Customer implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Customer other = (Customer) obj;
-		return Objects.equals(address, other.address) && Objects.equals(email, other.email)
-				&& Objects.equals(firstName, other.firstName) && Objects.equals(id, other.id)
-				&& Objects.equals(lastName, other.lastName) && Objects.equals(phoneNumber, other.phoneNumber);
+		return Objects.equals(email, other.email) && Objects.equals(firstName, other.firstName)
+				&& Objects.equals(id, other.id) && Objects.equals(lastName, other.lastName)
+				&& Objects.equals(phoneNumber, other.phoneNumber);
 	}
 }
