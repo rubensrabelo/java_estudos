@@ -18,8 +18,7 @@ public class Customer implements Serializable {
 	public Customer() {
 	}
 
-	public Customer(Long id, String firstName, String lastName, String email, String phoneNumber, Address address) {
-		this.id = id;
+	public Customer(String firstName, String lastName, String email, String phoneNumber, Address address) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
