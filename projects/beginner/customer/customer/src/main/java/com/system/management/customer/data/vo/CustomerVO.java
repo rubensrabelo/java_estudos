@@ -41,15 +41,18 @@ public class CustomerVO implements Serializable {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private LocalDate birthDate;
 	
+	private String gender;
+	
 	public CustomerVO() {
 	}
 
-	public CustomerVO(String firstName, String lastName, String email, String phoneNumber, LocalDate birthDate) {
+	public CustomerVO(String firstName, String lastName, String email, String phoneNumber, LocalDate birthDate, String gender) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.phoneNumber = phoneNumber;
 		this.birthDate = birthDate;
+		this.gender = gender;
 	}
 
 	public Long getKey() {
@@ -99,10 +102,18 @@ public class CustomerVO implements Serializable {
 	public void setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
 	}
+	
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(birthDate, email, firstName, key, lastName, phoneNumber);
+		return Objects.hash(birthDate, email, firstName, gender, key, lastName, phoneNumber);
 	}
 
 	@Override
@@ -115,7 +126,8 @@ public class CustomerVO implements Serializable {
 			return false;
 		CustomerVO other = (CustomerVO) obj;
 		return Objects.equals(birthDate, other.birthDate) && Objects.equals(email, other.email)
-				&& Objects.equals(firstName, other.firstName) && Objects.equals(key, other.key)
-				&& Objects.equals(lastName, other.lastName) && Objects.equals(phoneNumber, other.phoneNumber);
+				&& Objects.equals(firstName, other.firstName) && Objects.equals(gender, other.gender)
+				&& Objects.equals(key, other.key) && Objects.equals(lastName, other.lastName)
+				&& Objects.equals(phoneNumber, other.phoneNumber);
 	}
 }
