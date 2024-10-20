@@ -17,11 +17,15 @@ public class Address implements Serializable {
 	public String postalCode;
 	public String country;
 	
+	public Customer user;
+	
 	public Address() {
 	}
 
-	public Address(String street, int number, String complement, String neighborhood, String city,
-			String state, String postalCode, String country) {
+	
+
+	public Address(Long id, String street, int number, String complement, String neighborhood, String city,
+			String state, String postalCode, String country, Customer user) {
 		this.street = street;
 		this.number = number;
 		this.complement = complement;
@@ -30,7 +34,10 @@ public class Address implements Serializable {
 		this.state = state;
 		this.postalCode = postalCode;
 		this.country = country;
+		this.user = user;
 	}
+
+
 
 	public Long getId() {
 		return id;
@@ -103,10 +110,19 @@ public class Address implements Serializable {
 	public void setCountry(String country) {
 		this.country = country;
 	}
+	
+
+	public Customer getUser() {
+		return user;
+	}
+
+	public void setUser(Customer user) {
+		this.user = user;
+	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(city, complement, country, id, neighborhood, number, postalCode, state, street);
+		return Objects.hash(city, complement, country, id, neighborhood, number, postalCode, state, street, user);
 	}
 
 	@Override
@@ -122,6 +138,6 @@ public class Address implements Serializable {
 				&& Objects.equals(country, other.country) && Objects.equals(id, other.id)
 				&& Objects.equals(neighborhood, other.neighborhood) && number == other.number
 				&& Objects.equals(postalCode, other.postalCode) && Objects.equals(state, other.state)
-				&& Objects.equals(street, other.street);
+				&& Objects.equals(street, other.street) && Objects.equals(user, other.user);
 	}
 }
