@@ -21,10 +21,10 @@ public class Customer implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "first_name", length = 50, nullable = false)
+	@Column(name = "first_name", length = 15, nullable = false)
 	private String firstName;
 	
-	@Column(name = "last_name")
+	@Column(name = "last_name", length = 15)
 	private String lastName;
 	
 	@Column(length = 150, nullable = false, unique = true)
@@ -36,15 +36,19 @@ public class Customer implements Serializable {
 	@Column(name = "birth_date")
 	private LocalDate birthDate;
 	
+	@Column(length = 1)
+	private String gender;
+	
 	public Customer() {
 	}
 
-	public Customer(String firstName, String lastName, String email, String phoneNumber, LocalDate birthDate) {
+	public Customer(String firstName, String lastName, String email, String phoneNumber, LocalDate birthDate, String gender) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.phoneNumber = phoneNumber;
 		this.birthDate = birthDate;
+		this.gender = gender;
 	}
 
 	public Long getId() {
@@ -95,9 +99,17 @@ public class Customer implements Serializable {
 		this.birthDate = birthDate;
 	}
 
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(birthDate, email, firstName, id, lastName, phoneNumber);
+		return Objects.hash(birthDate, email, firstName, gender, id, lastName, phoneNumber);
 	}
 
 	@Override
@@ -110,7 +122,8 @@ public class Customer implements Serializable {
 			return false;
 		Customer other = (Customer) obj;
 		return Objects.equals(birthDate, other.birthDate) && Objects.equals(email, other.email)
-				&& Objects.equals(firstName, other.firstName) && Objects.equals(id, other.id)
-				&& Objects.equals(lastName, other.lastName) && Objects.equals(phoneNumber, other.phoneNumber);
+				&& Objects.equals(firstName, other.firstName) && Objects.equals(gender, other.gender)
+				&& Objects.equals(id, other.id) && Objects.equals(lastName, other.lastName)
+				&& Objects.equals(phoneNumber, other.phoneNumber);
 	}
 }
