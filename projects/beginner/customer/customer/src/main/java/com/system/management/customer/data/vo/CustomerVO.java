@@ -5,20 +5,24 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.github.dozermapper.core.Mapping;
 
 import jakarta.persistence.Column;
 
 @JsonPropertyOrder({"id", "first_name", "last_name", "email", "phone_number", "birth_date"})
-public class Customer implements Serializable {
+public class CustomerVO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	private Long id;
+	@Mapping("id")
+	@JsonProperty("id")
+	private Long key;
 	
 	@Column(name = "first_name")
 	private String firstName;
@@ -37,10 +41,10 @@ public class Customer implements Serializable {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private LocalDate birthDate;
 	
-	public Customer() {
+	public CustomerVO() {
 	}
 
-	public Customer(String firstName, String lastName, String email, String phoneNumber, LocalDate birthDate) {
+	public CustomerVO(String firstName, String lastName, String email, String phoneNumber, LocalDate birthDate) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
@@ -48,12 +52,12 @@ public class Customer implements Serializable {
 		this.birthDate = birthDate;
 	}
 
-	public Long getId() {
-		return id;
+	public Long getKey() {
+		return key;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setKey(Long key) {
+		this.key = key;
 	}
 
 	public String getFirstName() {
@@ -98,7 +102,7 @@ public class Customer implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(birthDate, email, firstName, id, lastName, phoneNumber);
+		return Objects.hash(birthDate, email, firstName, key, lastName, phoneNumber);
 	}
 
 	@Override
@@ -109,9 +113,9 @@ public class Customer implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Customer other = (Customer) obj;
+		CustomerVO other = (CustomerVO) obj;
 		return Objects.equals(birthDate, other.birthDate) && Objects.equals(email, other.email)
-				&& Objects.equals(firstName, other.firstName) && Objects.equals(id, other.id)
+				&& Objects.equals(firstName, other.firstName) && Objects.equals(key, other.key)
 				&& Objects.equals(lastName, other.lastName) && Objects.equals(phoneNumber, other.phoneNumber);
 	}
 }
