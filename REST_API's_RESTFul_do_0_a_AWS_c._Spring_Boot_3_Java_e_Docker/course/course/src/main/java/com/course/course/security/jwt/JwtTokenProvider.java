@@ -1,4 +1,4 @@
-package com.course.course.securityJwt;
+package com.course.course.security.jwt;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
