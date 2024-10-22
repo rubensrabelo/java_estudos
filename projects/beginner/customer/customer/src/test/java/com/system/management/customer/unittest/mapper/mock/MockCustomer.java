@@ -21,7 +21,7 @@ public class MockCustomer {
 		List<Customer> customers = new ArrayList<>();
 		
 		for(int i = 0; i < number; i++) {
-			customers.add(createMockEntity(number));
+			customers.add(createMockEntity(i));
 		}
 		
 		return customers;
@@ -31,7 +31,7 @@ public class MockCustomer {
 		List<CustomerVO> customers = new ArrayList<>();
 		
 		for(int i = 0; i < number; i++) {
-			customers.add(createMockVO(number));
+			customers.add(createMockVO(i));
 		}
 		
 		return customers;
