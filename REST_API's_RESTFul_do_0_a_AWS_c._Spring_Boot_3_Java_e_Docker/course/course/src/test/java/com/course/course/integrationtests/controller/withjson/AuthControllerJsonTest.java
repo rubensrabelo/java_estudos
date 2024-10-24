@@ -11,12 +11,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.course.course.config.TestConfigs;
 import com.course.course.data.vo.v1.security.AccountCredentialsVO;
 import com.course.course.data.vo.v1.security.TokenVO;
+import com.course.course.integrationtests.testcontainers.AbstractIntegrationTest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestMethodOrder(OrderAnnotation.class)
-public class AuthControllerJsonTest {
+public class AuthControllerJsonTest extends AbstractIntegrationTest {
 	
 private static TokenVO tokenVO;
 	
