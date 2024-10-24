@@ -68,7 +68,9 @@ public class CustomerService {
 			
 			updateData(entity, customEntity);
 			
-			return null;
+			var vo = DozerMapper.parseObject(repository.save(entity), CustomerVO.class);
+			
+			return vo;
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException(id);
 		}
