@@ -18,7 +18,7 @@ import com.system.management.customer.data.vo.CustomerVO;
 import com.system.management.customer.service.CustomerService;
 
 @RestController
-@RequestMapping("/customers")
+@RequestMapping("/api/customers/v1")
 public class CustomerController {
 	
 	@Autowired
