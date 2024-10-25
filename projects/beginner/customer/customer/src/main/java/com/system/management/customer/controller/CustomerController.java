@@ -3,6 +3,8 @@ package com.system.management.customer.controller;
 import java.net.URI;
 import java.util.List;
 
+import static com.system.management.customer.util.MediaType.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,21 +27,21 @@ public class CustomerController {
 	@Autowired
 	private CustomerService service;
 	
-	@GetMapping
+	@GetMapping(produces = {APPLICATION_JSON, APPLICATION_XML, APPLICATION_YAML})
 	public ResponseEntity<List<CustomerVO>> findAll() {
 		List<CustomerVO> customers = service.findAll();
 		
 		return ResponseEntity.ok().body(customers);
 	}
 	
-	@GetMapping(value = "/{id}")
+	@GetMapping(value = "/{id}", produces = {APPLICATION_JSON, APPLICATION_XML, APPLICATION_YAML})
 	public ResponseEntity<CustomerVO> findById(@PathVariable("id") Long id) {
 		CustomerVO customer = service.findById(id);
 		
 		return ResponseEntity.ok().body(customer);
 	}
 	
-	@PostMapping
+	@PostMapping(consumes = {APPLICATION_JSON, APPLICATION_XML, APPLICATION_YAML}, produces = {APPLICATION_JSON, APPLICATION_XML, APPLICATION_YAML})
 	public ResponseEntity<CustomerVO> create(@RequestBody CustomerVO customer) {
 		customer = service.create(customer);
 		
@@ -56,7 +58,7 @@ public class CustomerController {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@PutMapping(value = "/{id}")
+	@PutMapping(value = "/{id}", consumes = {APPLICATION_JSON, APPLICATION_XML, APPLICATION_YAML}, produces = {APPLICATION_JSON, APPLICATION_XML, APPLICATION_YAML})
 	public ResponseEntity<CustomerVO> update(@PathVariable("id") Long id, @RequestBody CustomerVO customer) {
 		customer = service.update(id, customer);
 		
