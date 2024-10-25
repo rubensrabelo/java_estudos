@@ -1,11 +1,16 @@
 package com.system.management.customer.service;
 
+import static  org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static  org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.system.management.customer.controller.CustomerController;
 import com.system.management.customer.data.vo.CustomerVO;
 import com.system.management.customer.mapper.DozerMapper;
 import com.system.management.customer.model.Customer;
@@ -25,6 +30,10 @@ public class CustomerService {
 	public List<CustomerVO> findAll() {
 		var listVO = DozerMapper.parseListObjects(repository.findAll(), CustomerVO.class);
 		
+		listVO
+			.stream()
+			.forEach(c -> c.add(linkTo(methodOn(CustomerController.class).findById(c.getKey())).withSelfRel()));;
+		
 		return listVO;
 	}
 	
@@ -32,6 +41,8 @@ public class CustomerService {
 		var entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
 		
 		var vo = DozerMapper.parseObject(entity, CustomerVO.class);
+		
+		vo.add(linkTo(methodOn(CustomerController.class).findById(id)).withSelfRel());
 		
 		return vo;
 	}
@@ -44,13 +55,15 @@ public class CustomerService {
 		
 		var vo = DozerMapper.parseObject(repository.save(entity), CustomerVO.class);
 		
+		vo.add(linkTo(methodOn(CustomerController.class).findById(vo.getKey())).withSelfRel());
+		
 		return vo;
 	}
 	
 	public void delete(Long id) {
 		try {
 			repository.deleteById(id);
-		} catch (ResourceNotFoundException e) {
+		} catch (EmptyResultDataAccessException e) {
 			throw new ResourceNotFoundException(id);
 		} catch (DataIntegrityViolationException e) {
 			throw new DatabaseException(e.getMessage());
@@ -69,6 +82,8 @@ public class CustomerService {
 			updateData(entity, customEntity);
 			
 			var vo = DozerMapper.parseObject(repository.save(entity), CustomerVO.class);
+			
+			vo.add(linkTo(methodOn(CustomerController.class).findById(id)).withSelfRel());
 			
 			return vo;
 		} catch (EntityNotFoundException e) {
