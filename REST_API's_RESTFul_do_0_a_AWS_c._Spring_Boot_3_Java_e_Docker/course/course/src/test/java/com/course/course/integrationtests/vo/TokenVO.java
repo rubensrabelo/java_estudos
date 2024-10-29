@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import jakarta.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class TokenVO implements Serializable{
 
 	private static final long serialVersionUID = 1L;
