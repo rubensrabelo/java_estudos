@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.project.product.model.User;
+import com.project.product.models.User;
 
 @RestController
 @RequestMapping(value = "/users")

@@ -1,4 +1,4 @@
-package com.project.product.model;
+package com.project.product.models;
 
 import java.io.Serializable;
 import java.util.Objects;
