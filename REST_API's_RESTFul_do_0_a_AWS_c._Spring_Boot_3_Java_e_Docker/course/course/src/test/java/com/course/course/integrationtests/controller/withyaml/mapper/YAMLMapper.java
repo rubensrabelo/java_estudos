@@ -15,6 +15,9 @@ public class YAMLMapper implements ObjectMapper {
 	private com.fasterxml.jackson.databind.ObjectMapper objectMapper;
 	protected TypeFactory typeFactory;
 	
+	public YAMLMapper() {
+	}
+	
 	public YAMLMapper(TypeFactory typeFactory) {
 		this.objectMapper = new com.fasterxml.jackson.databind.ObjectMapper(new YAMLFactory());
 		objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
