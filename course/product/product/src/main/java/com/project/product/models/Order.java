@@ -60,7 +60,7 @@ public class Order implements Serializable {
 		return client;
 	}
 
-	public void setcClient(User client) {
+	public void setClient(User client) {
 		this.client = client;
 	}
 
