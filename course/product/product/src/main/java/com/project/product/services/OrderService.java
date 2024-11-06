@@ -1,6 +1,7 @@
 package com.project.product.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,8 @@ public class OrderService {
 	}
 	
 	public Order findById(Long id) {
-		return repository.getReferenceById(id);
+		Optional<Order>  entity = repository.findById(id);
+		
+		return entity.get();
 	}
 }
