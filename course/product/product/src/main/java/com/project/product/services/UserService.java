@@ -1,6 +1,7 @@
 package com.project.product.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,8 +20,8 @@ public class UserService {
 	}
 	
 	public User findById(Long id) {
-		User user = repository.getReferenceById(id);
+		Optional<User> entity = repository.findById(id);
 		
-		return  user;
+		return  entity.get();
 	}
 }
