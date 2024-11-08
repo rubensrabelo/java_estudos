@@ -1,5 +1,7 @@
 package com.project.product.models;
 
+import java.util.Objects;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.product.models.pk.OrderItemPK;
 
@@ -14,16 +16,16 @@ public class OrderItem {
 	@EmbeddedId
 	private OrderItemPK id = new OrderItemPK(); 
 	
-	private Integer quantiy;
+	private Integer quantity;
 	private Double price;
 	
 	public OrderItem() {
 	}
 
-	public OrderItem(Order order, Product product, Integer quantiy, Double price) {
+	public OrderItem(Order order, Product product, Integer quantity, Double price) {
 		this.id.setOrder(order);;
 		this.id.setProduct(product);;
-		this.quantiy = quantiy;
+		this.quantity = quantity;
 		this.price = price;
 	}
 	
@@ -44,12 +46,12 @@ public class OrderItem {
 		id.setProduct(product);
 	}
 	
-	public Integer getQuantiy() {
-		return quantiy;
+	public Integer getQuantity() {
+		return quantity;
 	}
 
-	public void setQuantiy(Integer quantiy) {
-		this.quantiy = quantiy;
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
 	}
 
 	public Double getPrice() {
@@ -60,5 +62,25 @@ public class OrderItem {
 		this.price = price;
 	}
 	
-	
+	public Double getSubTotal() {
+		return price * quantity;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, price, quantity);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		OrderItem other = (OrderItem) obj;
+		return Objects.equals(id, other.id) && Objects.equals(price, other.price)
+				&& Objects.equals(quantity, other.quantity);
+	}
 }
