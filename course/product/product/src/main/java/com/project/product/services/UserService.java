@@ -28,7 +28,7 @@ public class UserService {
 	public User findById(Long id) {
 		Optional<User> entity = repository.findById(id);
 		
-		return  entity.get();
+		return  entity.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
 	public User create(User entity) {
