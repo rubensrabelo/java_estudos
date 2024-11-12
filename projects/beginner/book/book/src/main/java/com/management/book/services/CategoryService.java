@@ -32,12 +32,12 @@ public class CategoryService {
 		return entity.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
-	public Category create(Category category) {
-		repository.findCategoryByName(category.getName()).ifPresent(existingCategory -> {
-			throw new DuplicateResourceException("Category with name " + category.getName() + " already exists.");
+	public Category create(Category obj) {
+		repository.findCategoryByName(obj.getName()).ifPresent(existingCategory -> {
+			throw new DuplicateResourceException("Category with name " + obj.getName() + " already exists.");
 		});;
 		
-		return repository.save(category);
+		return repository.save(obj);
 	}
 	
 	public void delete(Long id) {
