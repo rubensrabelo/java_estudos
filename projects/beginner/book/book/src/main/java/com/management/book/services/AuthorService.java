@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.stereotype.Service;
 
 import com.management.book.models.Author;
 import com.management.book.repositories.AuthorRepository;
@@ -15,6 +16,7 @@ import com.management.book.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
 
+@Service
 public class AuthorService {
 	
 	@Autowired
