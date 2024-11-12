@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.management.book.models.Category;
 import com.management.book.repositories.CategoryRepository;
 import com.management.book.services.exceptions.DatabaseException;
+import com.management.book.services.exceptions.DuplicateResourceException;
 import com.management.book.services.exceptions.ResourceNotFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -32,6 +33,10 @@ public class CategoryService {
 	}
 	
 	public Category create(Category category) {
+		repository.findByName(category.getName()).ifPresent(existingCategory -> {
+			throw new DuplicateResourceException("Category with name " + category.getName() + " already exists.");
+		});;
+		
 		return repository.save(category);
 	}
 	
