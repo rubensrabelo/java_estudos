@@ -33,7 +33,7 @@ public class CategoryService {
 	}
 	
 	public Category create(Category category) {
-		repository.findByName(category.getName()).ifPresent(existingCategory -> {
+		repository.findCategoryByName(category.getName()).ifPresent(existingCategory -> {
 			throw new DuplicateResourceException("Category with name " + category.getName() + " already exists.");
 		});;
 		
