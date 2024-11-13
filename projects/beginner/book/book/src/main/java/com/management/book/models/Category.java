@@ -1,12 +1,15 @@
 package com.management.book.models;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -20,6 +23,9 @@ public class Category implements Serializable {
 	private Long id;
 	private String name;
 	private String description;
+	
+	@ManyToMany(mappedBy = "categories")
+	private Set<Book> books = new HashSet<>();
 	
 	public Category() {
 	}

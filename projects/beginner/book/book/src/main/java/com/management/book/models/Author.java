@@ -1,12 +1,15 @@
 package com.management.book.models;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -21,6 +24,9 @@ public class Author implements Serializable {
 	private String name;
 	private String nationality;
 	private String biography;
+	
+	@OneToMany(mappedBy = "author")
+	private Set<Book> books = new HashSet<>();
 	
 	public Author() {
 	}
@@ -62,6 +68,14 @@ public class Author implements Serializable {
 
 	public void setBiography(String biography) {
 		this.biography = biography;
+	}
+	
+	public Set<Book> getBooks() {
+		return books;
+	}
+
+	public void setBooks(Set<Book> books) {
+		this.books = books;
 	}
 
 	@Override
