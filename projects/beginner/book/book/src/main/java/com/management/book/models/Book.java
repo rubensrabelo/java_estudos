@@ -91,9 +91,20 @@ public class Book implements Serializable {
 	public void setAuthor(Author author) {
 		this.author = author;
 	}
+	
 
 	public Set<Category> getCategories() {
 		return categories;
+	}
+
+	public void addCategory(Category category) {
+		this.categories.add(category);
+		category.getBooks().add(this);
+	}
+	
+	public void removeCategory(Category category) {
+		this.categories.remove(category);
+		category.getBooks().remove(this);
 	}
 
 	public void setCategories(Set<Category> categories) {

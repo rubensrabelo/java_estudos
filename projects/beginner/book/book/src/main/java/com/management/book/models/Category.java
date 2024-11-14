@@ -60,6 +60,20 @@ public class Category implements Serializable {
 		this.description = description;
 	}
 
+	public Set<Book> getBooks() {
+		return books;
+	}
+
+	public void addBook(Book book) {
+		this.books.add(book);
+		book.getCategories().add(this);
+	}
+	
+	public void removeBook(Book book) {
+		this.books.remove(book);
+		book.getCategories().remove(this);
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(description, id, name);

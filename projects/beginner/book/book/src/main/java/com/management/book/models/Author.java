@@ -74,8 +74,14 @@ public class Author implements Serializable {
 		return books;
 	}
 
-	public void setBooks(Set<Book> books) {
-		this.books = books;
+	public void addBook(Book book) {
+		this.books.add(book);
+		book.setAuthor(this);
+	}
+	
+	public void removeBook(Book book) {
+		this.books.remove(book);
+		book.setAuthor(null);
 	}
 
 	@Override
