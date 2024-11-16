@@ -13,6 +13,7 @@ import com.management.book.models.Book;
 import com.management.book.models.Category;
 import com.management.book.repositories.AuthorRepository;
 import com.management.book.repositories.BookRepository;
+import com.management.book.repositories.CategoryRepository;
 import com.management.book.services.exceptions.ResourceNotFoundException;
 
 @Service
@@ -25,7 +26,7 @@ public class BookService {
 	private AuthorRepository authorRepository;
 	
 	@Autowired
-	private CategoryService categoryRepository;
+	private CategoryRepository categoryRepository;
 	
 	public List<Book> findAll() {
 		return bookRepository.findAll();
@@ -41,18 +42,13 @@ public class BookService {
 		Author author = authorRepository.findById(book.getAuthor().getId())
 				.orElseThrow(() -> new ResourceNotFoundException(book.getAuthor().getId()));
 		
-		Set<Category> validCategories = book.getCategories().stream()
-				.map(cat -> {
-					Category c = categoryRepository.findById(cat.getId());
-					if(c == null)
-						throw new ResourceNotFoundException(cat.getId());
-					return c;
-				}).collect(Collectors.toSet());
-		
+		 Set<Category> validCategory = book.getCategories().stream()
+				 .map(cat -> categoryRepository.findById(cat.getId())
+						 .orElseThrow(() -> new ResourceNotFoundException(cat.getId())))
+				 .collect(Collectors.toSet());
+		 
 		book.setAuthor(author);
-		
-		for(Category cat : validCategories)
-				book.addCategory(cat);
+		book.addCategory(validCategory);
 		
 		return bookRepository.save(book);
 	}
