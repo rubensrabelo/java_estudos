@@ -97,20 +97,19 @@ public class Book implements Serializable {
 		return categories;
 	}
 
-	public void addCategory(Category category) {
-		this.categories.add(category);
-		category.getBooks().add(this);
+	public void addCategories(Set<Category> categories) {
+		for(Category cat: categories) {
+			this.categories.add(cat);
+			cat.getBooks().add(this);
+
+		}
 	}
 	
 	public void removeCategory(Category category) {
 		this.categories.remove(category);
 		category.getBooks().remove(this);
 	}
-
-	public void setCategories(Set<Category> categories) {
-		this.categories = categories;
-	}
-
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(author, categories, id, isbn, publicationDate, title);
