@@ -67,9 +67,9 @@ public class Category implements Serializable {
 		return books;
 	}
 
-	public void addBook(Book book) {
-		this.books.add(book);
-		book.getCategories().add(this);
+	public void addBook(Set<Book> books) {
+		this.books.addAll(books);
+		books.forEach(book -> book.getCategories().add(this));
 	}
 	
 	public void removeBook(Book book) {
