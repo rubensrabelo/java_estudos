@@ -52,7 +52,8 @@ public class CategoryService {
 	
 	public Category update(Long id, Category obj) {
 		try {
-			Category entity = repository.findById(id).get();
+			Category entity = repository.findById(id)
+					.orElseThrow(() -> new ResourceNotFoundException(id));
 			updateData(entity, obj);
 			return repository.save(entity);
 		} catch (EntityNotFoundException e) {
