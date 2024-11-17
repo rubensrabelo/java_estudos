@@ -98,11 +98,8 @@ public class Book implements Serializable {
 	}
 
 	public void addCategories(Set<Category> categories) {
-		for(Category cat: categories) {
-			this.categories.add(cat);
-			cat.getBooks().add(this);
-
-		}
+		this.categories.addAll(categories);
+		categories.forEach(cat -> cat.getBooks().add(this));
 	}
 	
 	public void removeCategory(Category category) {
