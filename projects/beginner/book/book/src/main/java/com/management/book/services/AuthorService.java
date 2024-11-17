@@ -52,7 +52,8 @@ public class AuthorService {
 	
 	public Author update(Long id, Author obj) {
 		try {
-			Author entity = repository.findById(id).get();
+			Author entity = repository.findById(id)
+					.orElseThrow(() -> new ResourceNotFoundException(id));
 			updateData(entity, obj);
 			return repository.save(entity);
 		} catch (EntityNotFoundException e) {
