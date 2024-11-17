@@ -109,20 +109,19 @@ public class Book implements Serializable {
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(author, categories, id, isbn, publicationDate, title);
+	    return Objects.hash(id, title, isbn, publicationDate, author);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Book other = (Book) obj;
-		return Objects.equals(author, other.author) && Objects.equals(categories, other.categories)
-				&& Objects.equals(id, other.id) && Objects.equals(isbn, other.isbn)
-				&& Objects.equals(publicationDate, other.publicationDate) && Objects.equals(title, other.title);
+	    if (this == obj) return true;
+	    if (obj == null || getClass() != obj.getClass()) return false;
+	    Book other = (Book) obj;
+	    return Objects.equals(id, other.id) &&
+	           Objects.equals(title, other.title) &&
+	           Objects.equals(isbn, other.isbn) &&
+	           Objects.equals(publicationDate, other.publicationDate) &&
+	           Objects.equals(author, other.author);
 	}
+
 }
