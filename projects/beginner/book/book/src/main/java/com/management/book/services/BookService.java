@@ -46,8 +46,10 @@ public class BookService {
 	public Book create(Book obj) {
 		Author author = validAuthor(obj.getAuthor().getId());
 		Set<Category> categories = validCategories(obj);
-		 
+		
 		obj.setAuthor(author);
+		
+		obj.getCategories().clear();
 		obj.addCategories(categories);
 		
 		return bookRepository.save(obj);
@@ -99,7 +101,11 @@ public class BookService {
         entity.setPublicationDate(obj.getPublicationDate());
         entity.setAuthor(author);
         
+        if(!entity.getAuthor().equals(author))
+        	entity.setAuthor(author);
+        
         entity.getCategories().clear();
         entity.addCategories(categories);
+        categories.forEach(cat -> cat.getBooks().add(entity));
 	}
 }
