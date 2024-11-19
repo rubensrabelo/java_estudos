@@ -34,8 +34,8 @@ public class AuthorController {
 	private AuthorService service;
 
 	@GetMapping
-	@Operation(summary = "Finds all authors", description = "Finds all authors", tags = { "Author" }, responses = {
-			@ApiResponse(description = "Sucess", responseCode = "200", content = {
+	@Operation(summary = "Finds all Authors", description = "Finds All authors", tags = { "Author" }, responses = {
+			@ApiResponse(description = "Success", responseCode = "200", content = {
 					@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Author.class))) }),
 			@ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
 			@ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
