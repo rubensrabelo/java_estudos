@@ -35,7 +35,7 @@ public class CategoryController {
 	
 	@GetMapping
 	@Operation(summary = "Finds all Categories", description = "Finds all Categories", tags = { "Category" }, responses = {
-			@ApiResponse(description = "Sucess", responseCode = "200", content = {
+			@ApiResponse(description = "Success", responseCode = "200", content = {
 					@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Category.class))) }),
 			@ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
 			@ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
