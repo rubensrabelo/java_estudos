@@ -6,7 +6,7 @@ Este projeto é uma API RESTful desenvolvida com **Spring Boot** para gerenciame
 
 ## 📂 Estrutura de Pastas
 
-A estrutura do projeto segue boas práticas para organização de aplicações Spring Boot, distribuindo responsabilidades de forma clara e modularizada:
+A estrutura do projeto segue boas práticas para organização de aplicações Spring Boot, distribuindo responsabilidades de forma clara e modularizada. Todas as pastas descritas estão localizadas dentro de **`src/main/java/com/management/book`**.
 
 ### **`config/`**
 Configuração do Swagger para documentar a API de forma interativa:
@@ -71,5 +71,5 @@ Camada de lógica de negócios que conecta os controllers aos repositórios:
 - **Spring Data JPA** para persistência de dados.
 - **Postgresql** para o armazenamento dos dados.
 - **Swagger/OpenAPI** para documentação da API.
-
+  
 ---
