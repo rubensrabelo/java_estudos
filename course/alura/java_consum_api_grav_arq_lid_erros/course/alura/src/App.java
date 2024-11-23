@@ -15,7 +15,7 @@ public class App {
         System.out.println("Insert a movie for search: ");
         var search = sc.nextLine();
 
-        String url = "https://www.omdbapi.com/?t=" + search + "&apikey=802bd4ce";
+        String url = "";
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -25,9 +25,6 @@ public class App {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         
         String json = response.body();
-
-        // System.out.println(json);
-
 
         Gson gson = new Gson();
 
