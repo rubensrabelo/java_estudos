@@ -4,8 +4,11 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Scanner;
 
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import models.TitleOmdb;
 import models.Title;
 
 public class App {
@@ -15,7 +18,7 @@ public class App {
         System.out.println("Insert a movie for search: ");
         var search = sc.nextLine();
 
-        String url = "";
+        String url = "http://www.omdbapi.com/?t=" + search + "&apikey=802bd4ce";
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -26,9 +29,17 @@ public class App {
         
         String json = response.body();
 
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder()
+            .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+            .create();
+        
+        TitleOmdb titleOmdb = gson.fromJson(json, TitleOmdb.class);
 
-        Title title = gson.fromJson(json, Title.class);
+        System.out.println(titleOmdb);
+
+        System.out.println();
+
+        Title title = new Title(titleOmdb);
 
         System.out.println(title);
 
