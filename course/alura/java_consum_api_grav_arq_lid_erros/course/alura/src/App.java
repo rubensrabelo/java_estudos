@@ -20,29 +20,37 @@ public class App {
 
         String url = "";
 
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .build();
+        try {
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .build();
 
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            
+            String json = response.body();
+
+            Gson gson = new GsonBuilder()
+                .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+                .create();
+            
+            TitleOmdb titleOmdb = gson.fromJson(json, TitleOmdb.class);
+
+            System.out.println(titleOmdb);
+
+            System.out.println();
+
         
-        String json = response.body();
-
-        Gson gson = new GsonBuilder()
-            .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
-            .create();
-        
-        TitleOmdb titleOmdb = gson.fromJson(json, TitleOmdb.class);
-
-        System.out.println(titleOmdb);
-
-        System.out.println();
-
-        Title title = new Title(titleOmdb);
-
-        System.out.println(title);
-
-        sc.close();
+            Title title = new Title(titleOmdb);
+            System.out.println(title);
+        } catch (NumberFormatException e) {
+            System.out.println("Error:");
+            System.out.println(e.getMessage());
+        } catch(IllegalArgumentException e) {
+            System.out.println("Error:");
+            System.out.println(e.getMessage());
+        } finally {
+            sc.close();
+        }
     }
 }
