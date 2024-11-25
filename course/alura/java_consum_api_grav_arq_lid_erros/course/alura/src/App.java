@@ -8,6 +8,7 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import exceptions.ErroDeConversaoDeAnoException;
 import models.TitleOmdb;
 import models.Title;
 
@@ -18,7 +19,7 @@ public class App {
         System.out.println("Insert a movie for search: ");
         var search = sc.nextLine();
 
-        String url = "";
+        String url = "" + search.replace(" ", "+") + "";
 
         try {
             HttpClient client = HttpClient.newHttpClient();
@@ -48,6 +49,8 @@ public class App {
             System.out.println(e.getMessage());
         } catch(IllegalArgumentException e) {
             System.out.println("Error:");
+            System.out.println(e.getMessage());
+        } catch(ErroDeConversaoDeAnoException e) {
             System.out.println(e.getMessage());
         } finally {
             sc.close();
