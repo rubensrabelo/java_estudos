@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/to_do_list
+    username: postgres
+    password: root
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update # Use 'validate', 'update', 'create', ou 'create-drop' conforme necessário
+    show-sql: true # Mostra as queries SQL no console (opcional)
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
