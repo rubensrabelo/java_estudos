@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import br.com.alura.screenmatch.models.EpisodeData;
 import br.com.alura.screenmatch.models.SeasonsData;
 import br.com.alura.screenmatch.models.SeriesData;
 import br.com.alura.screenmatch.services.ConsumeApi;
@@ -37,5 +38,16 @@ public class Menu {
 
         }
         seasons.forEach(System.out::println);
+        
+        /*
+        for(int i = 0; i < data.totalSeasons(); i++) {
+        	List<EpisodeData> episodesSeason = seasons.get(i).episodes();
+        	for(int j = 0; j < episodesSeason.size(); j++) {
+        		System.out.println(episodesSeason.get(i).title());
+        	}
+        }
+        */
+        
+        seasons.forEach(t -> t.episodes().forEach(e -> System.out.println(e.title())));
 	}
 }
