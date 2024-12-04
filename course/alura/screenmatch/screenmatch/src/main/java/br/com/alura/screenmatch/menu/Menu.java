@@ -1,11 +1,13 @@
 package br.com.alura.screenmatch.menu;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+import br.com.alura.screenmatch.models.Episode;
 import br.com.alura.screenmatch.models.EpisodeData;
 import br.com.alura.screenmatch.models.SeasonsData;
 import br.com.alura.screenmatch.models.SeriesData;
@@ -61,5 +63,27 @@ public class Menu {
         			.sorted(Comparator.comparing(EpisodeData::rating).reversed())
         			.limit(5)
         			.forEach(System.out::println);
+        
+        List<Episode> episodes = seasons.stream()
+        							.flatMap(s -> s.episodes().stream()
+        									.map(d -> new Episode(d.number(), d)))
+        							.collect(Collectors.toList());
+        
+        episodes.forEach(System.out::println);
+        
+        System.out.println("From what year do you want to watch the episodes? ");
+        var year = input.nextInt();
+        
+        input.nextLine();
+        
+        LocalDate dateSearch = LocalDate.of(year, 1, 1);
+        
+        episodes.stream()
+        	.filter(e -> e.getReleaseDate() != null && e.getReleaseDate().isAfter(dateSearch))
+        	.forEach(e -> System.out.println(
+        			"Season: " + e.getSeason() +
+        			", Title: " + e.getTitle() + 
+        			", Release Date: " + e.getReleaseDate()
+        			));
 	}
 }
