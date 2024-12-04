@@ -1,8 +1,10 @@
 package br.com.alura.screenmatch.menu;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import br.com.alura.screenmatch.models.EpisodeData;
 import br.com.alura.screenmatch.models.SeasonsData;
@@ -49,5 +51,15 @@ public class Menu {
         */
         
         seasons.forEach(t -> t.episodes().forEach(e -> System.out.println(e.title())));
+        
+        List<EpisodeData> episodeData = seasons.stream()
+        									.flatMap(s -> s.episodes().stream())
+        									.collect(Collectors.toList());
+        
+        episodeData.stream()
+        			.filter(e -> !e.rating().equalsIgnoreCase("N/A"))
+        			.sorted(Comparator.comparing(EpisodeData::rating).reversed())
+        			.limit(5)
+        			.forEach(System.out::println);
 	}
 }
