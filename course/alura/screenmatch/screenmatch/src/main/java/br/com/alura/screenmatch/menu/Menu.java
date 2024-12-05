@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -70,6 +71,16 @@ public class Menu {
         							.collect(Collectors.toList());
         
         episodes.forEach(System.out::println);
+        
+        System.out.println("Enter an excerpt or title you are looking for: ");
+        var partTitle = input.nextLine();
+        
+        Optional<Episode> episodeSeached = episodes.stream()
+        		.filter(e -> e.getTitle().toUpperCase().contains(partTitle.toUpperCase()))
+        		.findFirst();
+        
+        if(episodeSeached.isPresent()) 
+        	System.out.println(episodeSeached);
         
         System.out.println("From what year do you want to watch the episodes? ");
         var year = input.nextInt();
