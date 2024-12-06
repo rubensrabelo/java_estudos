@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.project.todolist.models.Task;
+import com.project.todolist.models.User;
 import com.project.todolist.services.TaskService;
 
 @RestController
@@ -26,8 +28,11 @@ public class TaskController {
 	private TaskService service;
 
 	@GetMapping
-	public ResponseEntity<List<Task>> findAll() {
-		List<Task> list = service.findAll();
+	public ResponseEntity<List<Task>> findAllUserTasks() {
+		User user = (User) SecurityContextHolder.getContext()
+				.getAuthentication().getPrincipal();
+		
+		List<Task> list = service.findAllUserTasks(user.getId());
 		return ResponseEntity.ok().body(list);
 	}
 

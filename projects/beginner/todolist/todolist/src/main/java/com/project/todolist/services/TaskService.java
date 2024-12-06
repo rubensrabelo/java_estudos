@@ -20,8 +20,8 @@ public class TaskService {
 	@Autowired
 	public TaskRepository repository;
 	
-	public List<Task> findAll() {
-		List<Task> list = repository.findAll();
+	public List<Task> findAllUserTasks(Long userId) {
+		List<Task> list = repository.findByUserId(userId);
 		return list;
 	}
 	
