@@ -3,7 +3,9 @@ package br.com.alura.screenmatch.menu;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.DoubleSummaryStatistics;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -96,5 +98,18 @@ public class Menu {
         			", Title: " + e.getTitle() + 
         			", Release Date: " + e.getReleaseDate()
         			));
+        
+        Map<Integer, Double> ratingsForSeason = episodes.stream()
+        								.filter(e -> e.getRating() > 0.0)
+        								.collect(Collectors.groupingBy(Episode::getSeason, 
+        										Collectors.averagingDouble(Episode::getRating)));
+        
+        System.out.println(ratingsForSeason);
+        
+        DoubleSummaryStatistics est = episodes.stream()
+        		.filter(e -> e.getRating() > 0)
+        		.collect(Collectors.summarizingDouble(Episode::getRating));
+        
+        System.out.println(est);
 	}
 }
