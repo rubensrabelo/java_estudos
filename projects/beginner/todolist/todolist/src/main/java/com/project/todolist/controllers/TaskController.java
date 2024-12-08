@@ -47,6 +47,11 @@ public class TaskController {
 	
 	@PostMapping
 	public ResponseEntity<Task> create(@RequestBody Task obj) {
+		User user = (User) SecurityContextHolder.getContext()
+				.getAuthentication().getPrincipal();
+		
+		obj.setUser(user);
+		
 		obj = service.create(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(obj.getId()).toUri();
