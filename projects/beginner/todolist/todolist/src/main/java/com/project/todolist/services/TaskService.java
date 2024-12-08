@@ -25,9 +25,10 @@ public class TaskService {
 		return list;
 	}
 	
-	public Task findById(Long id) {
-		Task entity = repository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Task with ID " + id + " not found"));
+	public Task findTaskById(Long taskId, Long userId) {
+		Task entity = repository.findByIdAndUserId(taskId, userId)
+				.orElseThrow(() -> new ResourceNotFoundException("Task with ID " + taskId +
+						" or User with id " + userId +" not found"));
 		return entity;
 	}
 	
