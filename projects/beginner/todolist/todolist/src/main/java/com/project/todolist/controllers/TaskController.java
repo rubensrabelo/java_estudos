@@ -60,7 +60,10 @@ public class TaskController {
 	
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
-		service.delete(id);
+		User user = (User) SecurityContextHolder.getContext()
+				.getAuthentication().getPrincipal();
+		
+		service.deleteTaskByIdAndUser(id, user.getId());
 		return ResponseEntity.noContent().build();
 	}
 	

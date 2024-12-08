@@ -37,11 +37,12 @@ public class TaskService {
 		return obj;
 	}
 	
-	public void delete(Long id) {
+	public void delete(Long taskId, Long userId) {
 		try {
-			repository.deleteById(id);
+			repository.deleteTaskByIdAndUser(taskId, userId);
 		} catch (EmptyResultDataAccessException e) {
-			throw new ResourceNotFoundException("Task with ID " + id + " not found");
+			throw new ResourceNotFoundException("Task with ID " + taskId + 
+					" or User with id " + userId + " not found");
 		} catch (DataIntegrityViolationException e) {
 			throw new DatabaseException(e.getMessage());
 		}
