@@ -21,6 +21,8 @@ public class Menu {
 
 	private final String ADDRESS = "https://www.omdbapi.com/?t=";
 	private final String API_KEY = "&apikey=";
+	
+	private List<SeriesData> seriesData = new ArrayList<>();
 
 	private Scanner input = new Scanner(System.in);
 	private ConsumeApi consume = new ConsumeApi();
