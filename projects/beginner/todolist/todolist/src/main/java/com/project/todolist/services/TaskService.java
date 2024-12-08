@@ -37,7 +37,7 @@ public class TaskService {
 		return obj;
 	}
 	
-	public void delete(Long taskId, Long userId) {
+	public void deleteTaskByIdAndUser(Long taskId, Long userId) {
 		try {
 			repository.deleteTaskByIdAndUser(taskId, userId);
 		} catch (EmptyResultDataAccessException e) {
