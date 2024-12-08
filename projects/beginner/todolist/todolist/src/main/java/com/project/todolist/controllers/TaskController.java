@@ -68,8 +68,11 @@ public class TaskController {
 	}
 	
 	@PutMapping(value  = "/{id}")
-	public ResponseEntity<Task> update(@PathVariable Long id, @RequestBody Task obj) {
-		obj = service.update(id, obj);
-		return ResponseEntity.ok().body(obj);
+	public ResponseEntity<Task> update(@PathVariable Long id, @RequestBody Task objTask) {
+		User user = (User) SecurityContextHolder.getContext()
+				.getAuthentication().getPrincipal();
+		
+		objTask = service.update(id, objTask, user.getId());
+		return ResponseEntity.ok().body(objTask);
 	}
 }

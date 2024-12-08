@@ -48,15 +48,17 @@ public class TaskService {
 		}
 	}
 	
-	public Task update(Long id, Task obj) {
+	public Task update(Long taskId, Task obj, Long userId) {
 		try {
-			Task entity = repository.findById(id)
-					.orElseThrow(() -> new ResourceNotFoundException("Task with ID " + id + " not found"));
+			Task entity = repository.findByIdAndUserId(taskId, userId)
+					.orElseThrow(() -> new ResourceNotFoundException("Task with ID " + taskId +
+							" or User with id " + userId +" not found"));
 			updateData(entity, obj);
 			entity = repository.save(entity);
 			return entity;
 		} catch (EntityNotFoundException e) {
-			throw new ResourceNotFoundException("Task with ID " + id + " not found");
+			throw new ResourceNotFoundException("Task with ID " + taskId +
+					" or User with id " + userId +" not found");
 		}
 	}
 
