@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import br.com.alura.screenmatch.models.SeasonsData;
 import br.com.alura.screenmatch.models.SeriesData;
 import br.com.alura.screenmatch.services.ConsumeApi;
 import br.com.alura.screenmatch.services.DataConverter;
@@ -69,7 +70,13 @@ public class Menu {
 	}
 
 	private void searchEpisodeBySerie() {
+		SeriesData seriesData = getDataSerie();
+		List<SeasonsData> seasons = new ArrayList<>();
 		
+		for(int i = 0; i< seriesData.totalSeasons(); i++) {
+			var json = consume.getData(ADDRESS + seriesData.title().replace(" ", "+" + "&season=" + i + API_KEY));
+			SeasonsData seasonsData = converter
+		}
 	}
 
 	private void listSeriesSearched() {
