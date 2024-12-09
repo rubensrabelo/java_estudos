@@ -1,10 +1,13 @@
 package br.com.alura.screenmatch.menu;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import br.com.alura.screenmatch.models.SeasonsData;
+import br.com.alura.screenmatch.models.Series;
 import br.com.alura.screenmatch.models.SeriesData;
 import br.com.alura.screenmatch.services.ConsumeApi;
 import br.com.alura.screenmatch.services.DataConverter;
@@ -47,10 +50,10 @@ public class Menu {
                 listSeriesSearched();
                 break;
             case 0:
-                System.out.println("Quint...");
+                System.out.println("Quit...");
                 break;
             default:
-                System.out.println("Invlaid option");
+                System.out.println("Invalid option");
         }
 		}
 	}
@@ -75,13 +78,20 @@ public class Menu {
 		
 		for(int i = 0; i< seriesData.totalSeasons(); i++) {
 			var json = consume.getData(ADDRESS + seriesData.title().replace(" ", "+" + "&season=" + i + API_KEY));
-			SeasonsData seasonsData = converter
+			SeasonsData seasonsData = converter.getData(json, SeasonsData.class);
+			seasons.add(seasonsData);
 		}
+		seasons.forEach(System.out::println);
 	}
 
 	private void listSeriesSearched() {
-		// TODO Auto-generated method stub
-		
+		List<Series> series = new ArrayList<>();
+		series = seriesData.stream()
+				.map(d -> new Series(d))
+				.collect(Collectors.toList());
+		series.stream()
+			.sorted(Comparator.comparing(Series::getGenre))
+			.forEach(System.out::println);;
 	}
 
 
