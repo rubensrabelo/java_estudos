@@ -1,16 +1,41 @@
 package br.com.alura.screenmatch.models;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.OptionalDouble;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+
+@Entity
+@Table(name = "tb_series")
 public class Series {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
 	private String title;
 	private Integer totalSeason;
 	private Double ratings;
+	
+	@Enumerated(EnumType.STRING)
 	private Category genre;
 	private String actors;
 	private String poster;
 	private String plot;
+	
+	@Transient
+	private List<Episode> episodes = new ArrayList<>();
+	
+	public Series() {
+	}
 	
 	public Series(SeriesData seriesData) {
 		this.title = seriesData.title();

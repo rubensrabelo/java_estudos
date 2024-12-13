@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import br.com.alura.screenmatch.models.SeasonsData;
 import br.com.alura.screenmatch.models.Series;
 import br.com.alura.screenmatch.models.SeriesData;
+import br.com.alura.screenmatch.repositories.SeriesRepository;
 import br.com.alura.screenmatch.services.ConsumeApi;
 import br.com.alura.screenmatch.services.DataConverter;
 
@@ -22,6 +23,12 @@ public class Menu {
 	private DataConverter converter = new DataConverter();
 
 	private List<SeriesData> seriesData = new ArrayList<>();
+	
+	private SeriesRepository repository;
+	
+	public Menu(SeriesRepository repository) {
+		this.repository = repository;
+	}
 
 	public void displayMenu() {
 		var option = -1;
@@ -60,7 +67,9 @@ public class Menu {
 
 	private void searchSerieWeb() {
 		SeriesData datas = getDataSerie();
-		seriesData.add(datas);
+		Series serie = new Series(datas);
+		// seriesData.add(datas);
+		repository.save(serie);
 		System.out.println(datas);
 	}
 
@@ -93,6 +102,4 @@ public class Menu {
 			.sorted(Comparator.comparing(Series::getGenre))
 			.forEach(System.out::println);;
 	}
-
-
 }
