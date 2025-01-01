@@ -3,6 +3,8 @@ package br.com.alura.screenmatch.models;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 
+import jakarta.persistence.ManyToOne;
+
 public class Episode {
 	
 	private Integer season;
@@ -10,6 +12,9 @@ public class Episode {
 	private Integer number;
 	private Double rating;
 	private LocalDate releaseDate;
+	
+	@ManyToOne
+	private Series serie;
 	
 	public Episode(Integer season, EpisodeData episodeData) {
 		this.season = season;
@@ -64,6 +69,15 @@ public class Episode {
 	
 	public void setReleaseDate(LocalDate releaseDate) {
 		this.releaseDate = releaseDate;
+	}
+	
+
+	public Series getSerie() {
+		return serie;
+	}
+
+	public void setSerie(Series serie) {
+		this.serie = serie;
 	}
 
 	@Override

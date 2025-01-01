@@ -1,11 +1,13 @@
-package br.com.alura.screenmatch.menu;
+package br.com.alura.screenmatch.main;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+import br.com.alura.screenmatch.models.Episode;
 import br.com.alura.screenmatch.models.SeasonsData;
 import br.com.alura.screenmatch.models.Series;
 import br.com.alura.screenmatch.models.SeriesData;
@@ -13,7 +15,7 @@ import br.com.alura.screenmatch.repositories.SeriesRepository;
 import br.com.alura.screenmatch.services.ConsumeApi;
 import br.com.alura.screenmatch.services.DataConverter;
 
-public class Menu {
+public class main {
 
 	private final String ADDRESS = "https://www.omdbapi.com/?t=";
 	private final String API_KEY = "&apikey=";
@@ -22,11 +24,13 @@ public class Menu {
 	private ConsumeApi consume = new ConsumeApi();
 	private DataConverter converter = new DataConverter();
 
-	private List<SeriesData> seriesData = new ArrayList<>();
+	// private List<SeriesData> seriesData = new ArrayList<>();
 	
 	private SeriesRepository repository;
 	
-	public Menu(SeriesRepository repository) {
+	private List<Series> series = new ArrayList<>();
+	
+	public main(SeriesRepository repository) {
 		this.repository = repository;
 	}
 
@@ -82,22 +86,41 @@ public class Menu {
 	}
 
 	private void searchEpisodeBySerie() {
-		SeriesData seriesData = getDataSerie();
-		List<SeasonsData> seasons = new ArrayList<>();
+		listSeriesSearched();
+		System.out.println("Choose series's name: ");
+		var nameSeries = input.nextLine();
 		
-		for(int i = 0; i< seriesData.totalSeasons(); i++) {
-			var json = consume.getData(ADDRESS + seriesData.title().replace(" ", "+" + "&season=" + i + API_KEY));
-			SeasonsData seasonsData = converter.getData(json, SeasonsData.class);
-			seasons.add(seasonsData);
+		Optional<Series> serie = series.stream()
+					.filter(s -> s.getTitle().toLowerCase().contains(nameSeries.toLowerCase()))
+					.findFirst();
+		
+		if(serie.isPresent()) {
+			// SeriesData seriesData = getDataSerie();
+			var seriesSearched = serie.get();
+			List<SeasonsData> seasons = new ArrayList<>();
+			
+			for(int i = 0; i< seriesSearched.getTotalSeason(); i++) {
+				var json = consume.getData(ADDRESS + seriesSearched.getTitle().replace(" ", "+" + "&season=" + i + API_KEY));
+				SeasonsData seasonsData = converter.getData(json, SeasonsData.class);
+				seasons.add(seasonsData);
+			}
+			seasons.forEach(System.out::println);
+			
+			List<Episode> episodes = seasons.stream()
+					.flatMap(d -> d.episodes().stream()
+							.map(e -> new Episode(d.number(), e)))
+					.collect(Collectors.toList());
+			
+			seriesSearched.setEpisodes(episodes);
+			repository.save(seriesSearched);
+		} else {
+			System.out.println("Serie not found.");
 		}
-		seasons.forEach(System.out::println);
+		
 	}
 
 	private void listSeriesSearched() {
-		List<Series> series = new ArrayList<>();
-		series = seriesData.stream()
-				.map(d -> new Series(d))
-				.collect(Collectors.toList());
+		series = repository.findAll();
 		series.stream()
 			.sorted(Comparator.comparing(Series::getGenre))
 			.forEach(System.out::println);;
