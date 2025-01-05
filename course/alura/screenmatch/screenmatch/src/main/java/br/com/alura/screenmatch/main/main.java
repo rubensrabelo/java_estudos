@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+import br.com.alura.screenmatch.models.Category;
 import br.com.alura.screenmatch.models.Episode;
 import br.com.alura.screenmatch.models.SeasonsData;
 import br.com.alura.screenmatch.models.Series;
@@ -175,5 +176,27 @@ public class main {
 		List<Series> topSeries = repository.findTop5ByOrderByRatings();
 		topSeries.forEach(s -> 
 					System.out.println(s.getTitle() + ", Ratings: " + s.getRatings()));
+	}
+	
+	private void searchSeriesByCategory() {
+		System.out.println("What category/genre do you want to search for series?");
+		var categoryName = input.nextLine();
+		Category category = Category.fromString(categoryName);
+		List<Series> seriesByCategory = repository.findByCategory(category);
+		System.out.println("Series by category: " + categoryName);
+		seriesByCategory.forEach(System.out::println);
+	}
+	
+	private void filterSeriesBySeasonEvaluation() {
+		System.out.println("Filter series up to how many seasons?");
+		var totalSeason = input.nextInt();
+		input.nextLine();
+		System.out.println("With an assessment based on what value?");
+		var ratings = input.nextDouble();
+		input.nextLine();
+		List<Series> filteredSeries = repository.findByTotalSeasonLessThanEqualAndRatingGreaterThanEqual(totalSeason, ratings);
+		System.out.println("Filtered series:");
+		filteredSeries.forEach(s -> 
+				System.out.println(s.getTitle() + " - Ratings: " + s.getRatings()));
 	}
 }
