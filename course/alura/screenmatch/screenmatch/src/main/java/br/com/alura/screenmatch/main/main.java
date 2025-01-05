@@ -27,7 +27,6 @@ public class main {
 	// private List<SeriesData> seriesData = new ArrayList<>();
 	
 	private SeriesRepository repository;
-	
 	private List<Series> series = new ArrayList<>();
 	
 	public main(SeriesRepository repository) {
@@ -42,6 +41,11 @@ public class main {
 					1 - Search series
 					2 - Search episodes
 					3 - List searched series
+					4 - Search series by title
+					5 - Search series by actor
+					6 - Top 5 Series
+					7 - Search series by category
+					8 - Filtrar séries
 					
 					0 - Quit
 					""";
@@ -60,6 +64,21 @@ public class main {
             case 3:
                 listSeriesSearched();
                 break;
+            case 4:
+            	searchSeriesByTitulo();
+            	break;
+            case 5:
+            	searchSeriesByActor();
+            	break;
+            case 6:
+            	searchTop5Series();
+            	break;
+            case 7:
+            	searchSeriesByCategory();
+            	break;
+            case 8:
+            	filterSeriesBySeasonEvaluation();
+            	break;
             case 0:
                 System.out.println("Quit...");
                 break;
@@ -124,5 +143,37 @@ public class main {
 		series.stream()
 			.sorted(Comparator.comparing(Series::getGenre))
 			.forEach(System.out::println);;
+	}
+	
+	private void searchSeriesByTitulo() {
+		System.out.println("Choose a series by name:");
+		var seriesName = input.nextLine();
+		Optional<Series> searchedSeries = repository.findByTitleContainingIgnoreCase(seriesName);
+		
+		if(searchedSeries.isPresent()) {
+			System.out.println("Series data: " + searchedSeries.get());
+		} else {
+			System.out.println("Series not found.");
+		}
+	}
+	
+	private void searchSeriesByActor() {
+		System.out.println("What is the search name?");
+		var actorName = input.nextLine();
+		
+		System.out.println("Assessments starting at what value?");
+		var ratings = input.nextDouble();
+		
+		List<Series> searchedSeries = repository.findByActorsContainingIgnoreCaseAndRatingGreaterThanEqual(actorName, ratings);
+		
+		System.out.println("Series " + actorName + " worked on:");
+		searchedSeries.forEach(s -> 
+					System.out.println(s.getTitle() + ", Rating: " + s.getRatings()));
+	}
+	
+	private void searchTop5Series() {
+		List<Series> topSeries = repository.findTop5ByOrderByRatings();
+		topSeries.forEach(s -> 
+					System.out.println(s.getTitle() + ", Ratings: " + s.getRatings()));
 	}
 }
