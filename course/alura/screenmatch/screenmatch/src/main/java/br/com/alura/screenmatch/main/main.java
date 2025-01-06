@@ -29,6 +29,7 @@ public class main {
 
 	private SeriesRepository repository;
 	private List<Series> series = new ArrayList<>();
+	private Optional<Series> searchSeries;
 
 	public main(SeriesRepository repository) {
 		this.repository = repository;
@@ -220,5 +221,27 @@ public class main {
 	
 	private void topEpisodesBySeries() {
 		searchSeriesByTitle();
+		if(searchSeries.isPresent()) {
+			Series series = searchSeries.get();
+			List<Episode> topEpisodes = repository.topEpisodesBySeries(series);
+			topEpisodes.forEach(e -> 
+				System.out.printf("Series: %s Season %s - Episode %s - Ratings %s\n",
+						e.getSerie().getTitle(), e.getSeason(),
+						e.getNumber(), e.getTitle(), e.getRating()));
+		}
 	}
+	
+	private void searchEpisodesAfterADate() {
+		searchSeriesByTitle();
+		if(searchSeries.isPresent()) {
+			Series series = searchSeries.get();
+			System.out.println("Enter the launch year");
+			var releaseYear = input.nextInt();
+			input.nextLine();
+			
+			List<Episode> episodesYear = repository.episodesBySeriesAndYear(series, releaseYear);
+			episodesYear.forEach(System.out::println);
+		}
+	}
+
 }
