@@ -49,6 +49,14 @@ public class Series {
 		this.plot = seriesData.plot();
 	}
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public String getTitle() {
 		return title;
 	}
