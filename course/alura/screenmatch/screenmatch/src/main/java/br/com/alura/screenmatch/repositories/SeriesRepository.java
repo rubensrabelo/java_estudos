@@ -18,12 +18,12 @@ public interface SeriesRepository extends JpaRepository<Series, Long> {
 
 	List<Series> findByActorsContainingIgnoreCaseAndRatingGreaterThanEqual(String actorName, double ratings);
 
-	List<Series> findTop5ByOrderByRatings();
+	List<Series> findTop5ByOrderByRatingsDesc();
 
 	List<Series> findByCategory(Category category);
 	
 	@Query("SELECT s FROM Series s WHERE s.totalSeason <= :totalSeason AND s.ratings >= :ratings")
-	List<Series> seriesPerSeasonEAValiacao(int totalSeason, double ratings);
+	List<Series> seriesPerSeasonAndRatings(int totalSeason, double ratings);
 	
 	@Query("SELECT e FROM Series s JOIN s.episode e WHERE e.title ILIKE %:partEpisode%")
 	List<Episode> episodesByExcerpt(String partEpisode);
@@ -33,4 +33,15 @@ public interface SeriesRepository extends JpaRepository<Series, Long> {
 	
 	@Query("SELECT e FROM Series s JOIN s.episodes e WHERE s = :series AND YEAR(e.releaseDate) >= :releaseYear")
 	List<Episode> episodesBySeriesAndYear(Series series, int releaseYear);
+	
+	@Query(
+			"SELECT s FROM Series s " +
+			"JOIN e.episodes e " + 
+			"GROUP BY s " +
+			"ORDER BY MAX(e.releaseDate) DESC LIMIT 5"
+			)
+	List<Series> latestReleases();
+	
+	@Query("SELECT e FROM Series s JOIN s.episodes e WHERE s.id = :id AND e.season = :number")
+	List<Episode> getEpisodesByNumber(Long id, Long number);
 }

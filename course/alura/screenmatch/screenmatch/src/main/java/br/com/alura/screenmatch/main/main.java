@@ -184,7 +184,7 @@ public class main {
 	}
 
 	private void searchTop5Series() {
-		List<Series> topSeries = repository.findTop5ByOrderByRatings();
+		List<Series> topSeries = repository.findTop5ByOrderByRatingsDesc();
 		topSeries.forEach(s -> System.out.println(s.getTitle() + ", Ratings: " + s.getRatings()));
 	}
 
@@ -204,7 +204,7 @@ public class main {
 		System.out.println("With an assessment based on what value?");
 		var ratings = input.nextDouble();
 		input.nextLine();
-		List<Series> filteredSeries = repository.seriesPerSeasonEAValiacao(totalSeason, ratings);
+		List<Series> filteredSeries = repository.seriesPerSeasonAndRatings(totalSeason, ratings);
 		System.out.println("Filtered series:");
 		filteredSeries.forEach(s -> System.out.println(s.getTitle() + " - Ratings: " + s.getRatings()));
 	}
