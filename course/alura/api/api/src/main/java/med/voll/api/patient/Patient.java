@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import med.voll.api.address.Address;
+import med.voll.api.doctor.DataRegistrationMedic;
 
 @Entity
 @Table(name = "patient")
@@ -27,6 +28,15 @@ public class Patient {
 	private Boolean activate;
 	
 	public Patient() {
+	}
+	
+	public Patient(PatientRegisterData data) {
+		this.name = data.name();
+		this.email = data.email();
+		this.phoneNumber = data.phoneNumber();
+		this.cpf = data.cpf();
+		// this.address = new Address(data.address());
+		this.activate = true;
 	}
 
 	public Patient(Long id, String name, String email, String phoneNumber, String cpf, Address address) {
@@ -94,6 +104,23 @@ public class Patient {
 	public void setActivate(Boolean activate) {
 		this.activate = activate;
 	}
+	
+	 public void updateData(PatientUpdateData data) {
+	        if (data.name() != null) {
+	            this.name = data.name();
+	        }
+	        if (data.phoneNumber() != null) {
+	            this.phoneNumber = data.phoneNumber();
+	        }
+	        if (data.address() != null) {
+	            this.address.updateInformation(data.address());;
+	        }
+
+	    }
+
+	    public void desable() {
+	        this.activate = false;
+	    }
 
 	@Override
 	public int hashCode() {
