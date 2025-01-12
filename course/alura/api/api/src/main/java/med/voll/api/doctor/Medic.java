@@ -34,6 +34,15 @@ public class Medic {
 	
 	public Medic() {
 	}
+	
+	public Medic(DataRegistrationMedic data) {
+		this.name = data.name();
+		this.email = data.email();
+		this.phoneNumber = data.phoneNumber();
+		this.crm = data.crm();
+		this.specialty = data.specialty();
+		this.address = data.address();
+	}
 
 	public Medic(Long id, String name, String email, String phoneNumber, String crm, Specialty specialty, Address address,
 			Boolean active) {
@@ -111,7 +120,7 @@ public class Medic {
 		this.active = active;
 	}
 	
-	public void atualizarInformacoes(DataUpdateMedic data) {
+	public void updateData(DataUpdateMedic data) {
         if (data.name() != null) {
             this.name = data.name();
         }
