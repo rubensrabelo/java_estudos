@@ -1,19 +1,20 @@
-package med.voll.api.patient;
+package med.voll.api.domain.doctor;
 
 import java.util.Objects;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import med.voll.api.address.Address;
-import med.voll.api.doctor.DataRegistrationMedic;
+import med.voll.api.domain.address.Address;
 
 @Entity
-@Table(name = "patient")
-public class Patient {
+@Table(name = "doctor")
+public class Medic {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,32 +22,38 @@ public class Patient {
 	private String name;
 	private String email;
 	private String phoneNumber;
-	private String cpf;
+	private String crm;
+	
+	@Enumerated(EnumType.STRING)
+	private Specialty specialty;
 	
 	@Embedded
-	private Address address;
-	private Boolean activate;
+	public Address address;
 	
-	public Patient() {
+	private Boolean active;
+	
+	public Medic() {
 	}
 	
-	public Patient(PatientRegisterData data) {
+	public Medic(DataRegistrationMedic data) {
 		this.name = data.name();
 		this.email = data.email();
 		this.phoneNumber = data.phoneNumber();
-		this.cpf = data.cpf();
-		// this.address = new Address(data.address());
-		this.activate = true;
+		this.crm = data.crm();
+		this.specialty = data.specialty();
+		this.address = data.address();
 	}
 
-	public Patient(Long id, String name, String email, String phoneNumber, String cpf, Address address) {
+	public Medic(Long id, String name, String email, String phoneNumber, String crm, Specialty specialty, Address address,
+			Boolean active) {
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.phoneNumber = phoneNumber;
-		this.cpf = cpf;
+		this.crm = crm;
+		this.specialty = specialty;
 		this.address = address;
-		this.activate = true;
+		this.active = active;
 	}
 
 	public Long getId() {
@@ -81,14 +88,22 @@ public class Patient {
 		this.phoneNumber = phoneNumber;
 	}
 
-	public String getCpf() {
-		return cpf;
+	public String getCrm() {
+		return crm;
 	}
 
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
+	public void setCrm(String crm) {
+		this.crm = crm;
 	}
 
+	public Specialty getSpecialty() {
+		return specialty;
+	}
+
+	public void setSpecialty(Specialty specialty) {
+		this.specialty = specialty;
+	}
+	
 	public Address getAddress() {
 		return address;
 	}
@@ -97,30 +112,29 @@ public class Patient {
 		this.address = address;
 	}
 
-	public Boolean getActivate() {
-		return activate;
+	public Boolean getActive() {
+		return active;
 	}
 
-	public void setActivate(Boolean activate) {
-		this.activate = activate;
+	public void setActive(Boolean active) {
+		this.active = active;
 	}
 	
-	 public void updateData(PatientUpdateData data) {
-	        if (data.name() != null) {
-	            this.name = data.name();
-	        }
-	        if (data.phoneNumber() != null) {
-	            this.phoneNumber = data.phoneNumber();
-	        }
-	        if (data.address() != null) {
-	            this.address.updateInformation(data.address());;
-	        }
-
-	    }
-
-	    public void desable() {
-	        this.activate = false;
-	    }
+	public void updateData(DataUpdateMedic data) {
+        if (data.name() != null) {
+            this.name = data.name();
+        }
+        if (data.phoneNumber() != null) {
+            this.phoneNumber = data.phoneNumber();
+        }
+        if (data.address() != null) {
+            this.address.updateInformation(data.address());
+        }
+    }
+	
+	public void disable() {
+		this.active = false;
+	}
 
 	@Override
 	public int hashCode() {
@@ -135,7 +149,7 @@ public class Patient {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Patient other = (Patient) obj;
+		Medic other = (Medic) obj;
 		return Objects.equals(id, other.id);
 	}
 }

@@ -1,4 +1,4 @@
-package med.voll.api.controller;
+package med.voll.api.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import med.voll.api.doctor.DataListMedic;
-import med.voll.api.doctor.DataRegistrationMedic;
-import med.voll.api.doctor.DataUpdateMedic;
-import med.voll.api.doctor.Medic;
-import med.voll.api.doctor.MedicRepository;
+import med.voll.api.domain.doctor.DataListMedic;
+import med.voll.api.domain.doctor.DataRegistrationMedic;
+import med.voll.api.domain.doctor.DataUpdateMedic;
+import med.voll.api.domain.doctor.Medic;
+import med.voll.api.domain.doctor.MedicRepository;
 
 @RestController
 @RequestMapping("/medics")
