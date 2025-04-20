@@ -1,3 +1,6 @@
+import com.google.gson.Gson;
+import model.Title;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -13,15 +16,21 @@ public class Main {
         var search = input.nextLine();
 
         String apiKey = "";
-        String address_api = "https://www.omdbapi.com/?t="+search+"&apikey="+apiKey;
+        String address = "https://www.omdbapi.com/?t=" + search + "&apikey=" + apiKey;
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(address_api))
+                .uri(URI.create(address))
                 .build();
         HttpResponse<String> response = client
                 .send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(response.body());
+
+        String json = response.body();
+        System.out.println(json);
+
+        Gson gson = new Gson();
+        Title title = gson.fromJson(json, Title.class);
+        System.out.println(title);
 
         input.close();
     }
