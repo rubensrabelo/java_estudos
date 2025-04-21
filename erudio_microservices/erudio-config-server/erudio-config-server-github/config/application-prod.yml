@@ -1,0 +1,16 @@
+server:
+  port: 8080
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+spring:
+  application:
+    name: greeting-service
+  cloud:
+    config:
+      enabled: false  # Desativa o Spring Cloud Config Client
+greeting-service:
+  greeting: "Ciao"
+  default-value: "Mondo"
