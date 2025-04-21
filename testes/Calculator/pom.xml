@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.course</groupId>
-    <artifactId>CalculatorMavenProjecto</artifactId>
+    <artifactId>Calculator</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -22,15 +22,5 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.5.3</version>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>
