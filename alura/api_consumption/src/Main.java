@@ -1,5 +1,8 @@
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import model.Title;
+import model.TitleOmdb;
 
 import java.io.IOException;
 import java.net.URI;
@@ -28,9 +31,17 @@ public class Main {
         String json = response.body();
         System.out.println(json);
 
-        Gson gson = new Gson();
-        Title title = gson.fromJson(json, Title.class);
-        System.out.println(title);
+        Gson gson = new GsonBuilder()
+                .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+                .create();
+        TitleOmdb titleOmdb = gson.fromJson(json, TitleOmdb.class);
+
+        try {
+            Title title = new Title(titleOmdb);
+            System.out.println(title);
+        } catch (NumberFormatException e) {
+            throw new RuntimeException(e.getMessage());
+        }
 
         input.close();
     }
