@@ -16,6 +16,9 @@ public class UserServiceImpl implements UserService {
         if(firstName.isEmpty() || firstName.trim().isEmpty())
             throw new IllegalArgumentException("User's first name is empty.");
 
+        if(lastName.isEmpty() || lastName.trim().isEmpty())
+            throw new IllegalArgumentException("User's last name is empty.");
+
         return new User(
                 id,
                 firstName,
