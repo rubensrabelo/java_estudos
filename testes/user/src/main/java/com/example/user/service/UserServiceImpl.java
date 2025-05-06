@@ -7,9 +7,14 @@ import java.util.UUID;
 
 public class UserServiceImpl implements UserService {
     UserRepository userRepository;
+    EmailVerificationService emailVerificationService;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(
+            UserRepository userRepository,
+            EmailVerificationService emailVerificationService
+    ) {
         this.userRepository = userRepository;
+        this.emailVerificationService = emailVerificationService;
     }
 
     @Override
@@ -40,6 +45,12 @@ public class UserServiceImpl implements UserService {
         try {
             isUserCreated = userRepository.save(user);
         } catch (RuntimeException e) {
+            throw new UserServiceException(e.getMessage());
+        }
+
+        try {
+            emailVerificationService.scheduleEmailConfirmation(user);
+        } catch (Exception e) {
             throw new UserServiceException(e.getMessage());
         }
 
