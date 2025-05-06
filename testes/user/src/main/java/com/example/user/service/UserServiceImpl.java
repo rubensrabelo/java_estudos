@@ -35,7 +35,13 @@ public class UserServiceImpl implements UserService {
                 confirmPassword
         );
 
-        boolean isUserCreated = userRepository.save(user);
+        boolean isUserCreated;
+
+        try {
+            isUserCreated = userRepository.save(user);
+        } catch (RuntimeException e) {
+            throw new UserServiceException(e.getMessage());
+        }
 
         if(!isUserCreated) throw new UserServiceException("Could not create user.");
 
